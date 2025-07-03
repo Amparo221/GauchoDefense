@@ -1,27 +1,24 @@
 import pygame
 from pygame.locals import *
 from jugador import *
+from menu import *
+from config import *
 
 pygame.init()
 
-pantalla = pygame.display.set_mode((1000, 600))
-fondo = pygame.image.load("GauchoDefense/assets/fondo.png").convert()
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+fondo = pygame.image.load("assets/fondo.png").convert()
 ancho_fondo, altura_fondo = fondo.get_size()  
 
-gaucho = pygame.image.load("GauchoDefense/assets/default.png").convert_alpha()
-gaucho_size=(150,150)
+gaucho = pygame.image.load("assets/default.png").convert_alpha()
+GAUCHO_SIZE=(150,150)
 gaucho = pygame.transform.scale(gaucho, gaucho_size)
-gaucho_x = 0
-gaucho_y = 0
-gaucho_velocidad = 5
-
 
 # BALAS
 bala_img = pygame.Surface((15, 5))  
 bala_img.fill((250, 0, 0)) 
-balas = []  #Lista pa las balas
-ultimo_disparo = 0  
-cooldown = 400  
+BALAS = []  #Lista pa las balas
+COOLDOWN = 400  
 
 
 def crear_fondo():
@@ -31,47 +28,80 @@ def crear_fondo():
 
 
 def crear_balas():
-    for bala in balas:
+    for bala in BALAS:
         pantalla.blit(bala_img, (bala[0], bala[1]))
 
+def iniciar_juego():
+    # Posición y estado inicial del gaucho
+    gaucho_x = 0
+    gaucho_y = 0
+    gaucho_velocidad = 5
 
-running = True
-reloj = pygame.time.Clock()
+    ultimo_disparo = 0  
 
 
-while running:
+    running = True
+    reloj = pygame.time.Clock()
 
-    tiempo_actual = pygame.time.get_ticks()
+    while running:
 
+        tiempo_actual = pygame.time.get_ticks()
 
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            running = False
-            
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if evento.type == KEYDOWN and evento.key == K_ESCAPE:
+                running = False
+                
+        gaucho_y = movimiento_jugador(gaucho_y, gaucho_velocidad)
+
+        #estos variables quizas deban venir por parámetro?
+        ultimo_disparo = disparar_balas(
+            BALAS, # esta no se si deba ser una constante. 
+            tiempo_actual, 
+            ultimo_disparo, 
+            COOLDOWN,
+            gaucho_x, 
+            gaucho_y,
+            GAUCHO_SIZE
+        )
+
+        crear_fondo()
+
+        crear_balas()
         
-    gaucho_y = movimiento_jugador(gaucho_y, gaucho_velocidad)
+        pantalla.blit(gaucho, (gaucho_x, gaucho_y))
 
-    
-    ultimo_disparo = disparar_balas(
-        balas, 
-        tiempo_actual, 
-        ultimo_disparo, 
-        cooldown,
-        gaucho_x, 
-        gaucho_y,
-        gaucho_size
-    )
+        
+        pygame.display.flip()
+        reloj.tick(60)
 
-    
-    crear_fondo()
-    crear_balas()
-    
-    pantalla.blit(gaucho, (gaucho_x, gaucho_y))
+ejecucion = True
+def main():
+    while ejecucion:
+        accion = mostrar_menu() 
 
-     
-    pygame.display.flip()
-    reloj.tick(60)
+        if accion == "jugar":
+            iniciar_juego()
 
-pygame.quit()
-quit()
-    
+        elif accion == "ranking":
+            print("Ranking:")  
+            pygame.time.delay(1000)
+
+        elif accion in ("créditos", "creditos"):
+            print("Créditos: Equipo Gaucho Defense")
+            pygame.time.delay(1000)
+
+        elif accion == "salir":
+            pygame.quit()
+            sys.exit()
+
+        else:
+            # Si ocurre algo sin manejar volver al menú por default
+            print(f"Opción inválida ({accion}), regresando al menú...")
+            pygame.time.delay(500)
+
+
+if __name__ == "__main__":
+    main()

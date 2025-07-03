@@ -1,0 +1,8 @@
+# virtualenv
+venv/
+# Bytecode
+__pycache__/
+*.py[cod]
+# OS
+.DS_Store
+
