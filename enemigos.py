@@ -1,31 +1,32 @@
 import pygame
+import random
 
-spawn_indice = 0 
-alturas_disponibles = [50, 150, 250, 350, 450]
+SPAWN_TIEMPO = 2000
+spawn_indice = 0
+ultimo_spawn = 0 
+alturas_disponibles = [50, 150, 250, 350, 450] # cambiar por random
 
-zombie_img = pygame.image.load("assets/result.png")
-zombie_tamanio = (150, 150)
+zombie_img = pygame.image.load("assets/soldado1_1.png")
+zombie_tamanio = (120, 120)
 zombie_img = pygame.transform.scale(zombie_img, zombie_tamanio) #fijate de arreglar esto
+
+zombie_velocidad = 2
 
 zombies = []
 
-zombie_velocidad = 3 
-
-SPAWN_TIME = 2000
-ultimo_spawn = 0 
-
-def spawn_zombie(tiempo_ahora, ultimo, ancho_screen, spawn_indice):
-    if tiempo_ahora - ultimo >= SPAWN_TIME:
-        y = alturas_disponibles[spawn_indice % len(alturas_disponibles)] # chequea esto
-        spawn_indice += 1
+def spawn_zombie(tiempo_ahora, ultimo, ancho_screen):
+    if tiempo_ahora - ultimo >= SPAWN_TIEMPO:
+        # y = alturas_disponibles[spawn_indice % len(alturas_disponibles)] # chequea esto
+        y = random.choice(alturas_disponibles)
+        # spawn_indice += 1
 
         nuevo = {
             "rect": pygame.Rect(ancho_screen, y, *zombie_tamanio),
             "img": zombie_img
         }
         zombies.append(nuevo)
-        return tiempo_ahora, spawn_indice
-    return ultimo, spawn_indice
+        return tiempo_ahora #, spawn_indice
+    return ultimo #, spawn_indice
 
 def mover_zombies():
     for z in zombies:
@@ -48,9 +49,9 @@ def detectar_colisiones(balas, puntaje):
     return puntaje
 
 
-def verificar_golpe_jugador(gaucho_rect, vidas):
+def verificar_choque_con_jugador(gaucho_rect, vidas):
     for z in zombies[:]:
         if z["rect"].colliderect(gaucho_rect):
             zombies.remove(z)
-            vidas -= 1
+            vidas = 0
     return vidas

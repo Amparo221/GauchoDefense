@@ -1,17 +1,11 @@
 import pygame
 from pygame.locals import *
 
-
-
 gaucho_size = (150, 150)
 
 gaucho_x = 0
 gaucho_y = 0
 gaucho_velocidad = 5
-
-
-
-
 
 def movimiento_jugador(y_actual, gaucho_velocidad):
     tecla_presionada = pygame.key.get_pressed()

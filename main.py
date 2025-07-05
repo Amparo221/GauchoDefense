@@ -19,7 +19,7 @@ ultimo_spawn = 0
 puntaje = 0
 vidas = 3
 gaucho_rect = pygame.Rect(gaucho_x, gaucho_y, *gaucho_size)
-spawn_index = 0
+# spawn_index = 0
 
 
 # BALAS
@@ -46,30 +46,33 @@ reloj = pygame.time.Clock()
 
 
 while running:
-
     tiempo_actual = pygame.time.get_ticks()
 
-    ultimo_spawn, spawn_index = spawn_zombie(tiempo_actual, ultimo_spawn, pantalla.get_width(), spawn_index)
-
+    # ultimo_spawn, spawn_index = spawn_zombie(tiempo_actual, ultimo_spawn, pantalla.get_width())
+    ultimo_spawn = spawn_zombie(tiempo_actual, ultimo_spawn, pantalla.get_width())
 
     mover_zombies()
 
     puntaje = detectar_colisiones(balas, puntaje)
 
     gaucho_rect = pygame.Rect(gaucho_x, gaucho_y, *gaucho_size)
-    vidas = verificar_golpe_jugador(gaucho_rect, vidas)
-# probando probandooooooo
+    vidas = verificar_choque_con_jugador(gaucho_rect, vidas)
+
     if vidas == 0:
+        pantalla.fill((0, 0, 0))
+        texto_partida_perdida = fuente.render(f'Perdiste, Canejo', True, (255, 255, 255))
+        pantalla.blit(texto_partida_perdida, (300, 250))
+        pygame.display.flip()
+        pygame.time.delay(5000)
         running = False
+        continue # ------------- ACA DEBERIA VOLVER AL MENU
 
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             running = False
             
-        
     gaucho_y = movimiento_jugador(gaucho_y, gaucho_velocidad)
 
-    
     ultimo_disparo = disparar_balas(
         balas, 
         tiempo_actual, 
@@ -80,7 +83,6 @@ while running:
         gaucho_size
     )
 
-    
     crear_fondo()
     crear_balas()
     
@@ -91,7 +93,6 @@ while running:
     fuente = pygame.font.SysFont(None, 36)
     texto = fuente.render(f'Puntaje: {puntaje}  Vidas: {vidas}', True, (255, 255, 255))
     pantalla.blit(texto, (10, 10))
-
 
     pygame.display.flip()
     reloj.tick(60)
