@@ -3,6 +3,7 @@ from pygame.locals import *
 from jugador import *
 from menu import *
 from config import *
+from enemigos import *
 
 
 pygame.init()
@@ -68,10 +69,17 @@ def iniciar_juego():
     disparo_duration = 400
 
 
+    ultimo_spawn = 0
+    puntaje = 0
+    vidas = 3
+    
+
+
     # Posición y estado inicial del gaucho
     gaucho_x = 0
     gaucho_y = 0
     gaucho_velocidad = 5
+    gaucho_rect = pygame.Rect(gaucho_x, gaucho_y, *gaucho_size)
 
     ultimo_disparo = 0  
 
@@ -82,6 +90,7 @@ def iniciar_juego():
     disparar = False
 
     running = True
+    game_over = False
     reloj = pygame.time.Clock()
 
     while running:
@@ -94,7 +103,35 @@ def iniciar_juego():
                 sys.exit()
             if evento.type == KEYDOWN and evento.key == K_ESCAPE:
                 running = False
-                
+
+        if game_over:
+            pantalla.fill((0, 0, 0))
+            texto_partida_perdida = fuente.render(f'Perdiste, Canejo', True, (255, 255, 255))
+            pantalla.blit(texto_partida_perdida, (300, 250))
+            pygame.display.flip()
+            pygame.time.delay(5000)
+            running = False
+            continue # ------------- ACA DEBERIA VOLVER AL MENU
+
+
+        ultimo_spawn = spawn_zombie(tiempo_actual, ultimo_spawn, pantalla.get_width())
+
+        mover_zombies()
+
+        puntaje = detectar_colisiones(balas, puntaje)
+
+        gaucho_rect = pygame.Rect(gaucho_x, gaucho_y, *gaucho_size)
+        vidas = verificar_choque_con_jugador(gaucho_rect, vidas)
+
+        
+
+        if vidas <= 0:
+            game_over = True
+            vidas = 0  # Ensure it doesn't go negative
+            continue  # Skip the rest of the game loop
+
+
+
         gaucho_y, is_moving = movimiento_jugador(gaucho_y, gaucho_velocidad)
 
         #estos variables quizas deban venir por parámetro?
@@ -125,6 +162,11 @@ def iniciar_juego():
         else:
             pantalla.blit(gaucho, (gaucho_x, gaucho_y))
 
+        dibujar_zombies(pantalla)
+
+        fuente = pygame.font.SysFont(None, 36)
+        texto = fuente.render(f'Puntaje: {puntaje}  Vidas: {vidas}', True, (255, 255, 255))
+        pantalla.blit(texto, (10, 10))
         
         pygame.display.flip()
         reloj.tick(60)
