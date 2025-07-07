@@ -79,8 +79,6 @@ def mostrar_menu():
     """
     botones = crear_botones()
 
-    seleccion = 0
-
     while True:
         pantalla.fill(GRIS)        # color de fondo
         dibujar_botones(botones)   # visualizar todos

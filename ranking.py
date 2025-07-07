@@ -5,7 +5,7 @@ from config import ANCHO, ALTO, fuente_mediana, BLANCO, GRIS
 
 ranking_path = "data/ranking.json"
 
-def load_scores(path=ranking_path):
+def cargar_puntuaciones(path=ranking_path):
     """
     Lee el archivo JSON y devuelve una lista de dicts:
     [
@@ -24,32 +24,32 @@ def load_scores(path=ranking_path):
             # En caso de archivo corrupto, lo sobrescribimos después
             return []
 
-def save_scores(scores, path=ranking_path):
+def guardar_puntuaciones(puntuaciones, path=ranking_path):
     """
-    Escribe la lista de dicts 'scores' en el archivo JSON.
+    Escribe la lista de dicts 'puntuaciones' en el archivo JSON.
     """
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(scores, f, ensure_ascii=False, indent=2)
+        json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def add_score(nombre, puntaje, path=ranking_path):
+def agregar_puntuacion(nombre, puntaje, path=ranking_path):
     """
-    Carga los scores existentes, añade el nuevo, guarda de nuevo.
+    Carga los puntuaciones existentes, añade el nuevo, guarda de nuevo.
     """
-    scores = load_scores(path)
+    puntuaciones = cargar_puntuaciones(path)
     # Añadimos al final
-    scores.append({"nombre": nombre, "puntaje": puntaje})
-    save_scores(scores, path)
+    puntuaciones.append({"nombre": nombre, "puntaje": puntaje})
+    guardar_puntuaciones(puntuaciones, path)
 
 
-def get_top_scores(scores, top_n=5):
+def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
     """
-    Recibe la lista 'scores' y devuelve las primeras top_n
+    Recibe la lista 'puntuaciones' y devuelve las primeras top_n
     ordenadas por 'puntaje' de mayor a menor.
     """
     # Ordenamos en sitio (no modifica el original si hacemos copia)
-    sorted_scores = sorted(scores, key=lambda x: x["puntaje"], reverse=True)
-    return sorted_scores[:top_n]
+    puntuaciones_ordenadas = sorted(puntuaciones, key=lambda x: x["puntaje"], reverse=True)
+    return puntuaciones_ordenadas[:top_n]
 
 
 def mostrar_ranking(screen, path=ranking_path):
@@ -61,8 +61,8 @@ def mostrar_ranking(screen, path=ranking_path):
     para volver al flujo principal.
     """
     # 4.1) Carga y prepara datos
-    scores = load_scores(path)
-    top5 = get_top_scores(scores, top_n=5)
+    puntuaciones = cargar_puntuaciones(path)
+    top5 = obtener_mejores_puntuaciones(puntuaciones, top_n=5)
 
     # 4.2) Bucle de pantalla
     clock = pygame.time.Clock()

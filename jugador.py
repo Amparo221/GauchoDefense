@@ -35,7 +35,7 @@ def movimiento_jugador(y_actual, gaucho_velocidad, ALTO):
 
 
 
-def disparar_balas(lista_de_balas, tiempo_actual, ultimo_disparo, cooldown, jugador_x, jugador_y, jugador_size):
+def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, cooldown, jugador_x, jugador_y, jugador_size):
     disparar=False
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
@@ -56,20 +56,49 @@ def disparar_balas(lista_de_balas, tiempo_actual, ultimo_disparo, cooldown, juga
     
     return ultimo_disparo, disparar
 
-def animaciones(pantalla, gaucho, disparar, tiempo_actual, disparo, disparo_duracion, is_moving, caminar, gaucho_x, gaucho_y, disparo_playing, disparo_start_time):
-    
-    if disparar:
+def generar_animaciones(
+    pantalla,
+    jugador_img,
+    disparar_flag,
+    tiempo_actual,
+    anim_disparo,
+    duracion_disparo,
+    en_movimiento,
+    anim_caminar,
+    pos_x,
+    pos_y,
+    disparo_playing,
+    disparo_start_time,
+    sonido_disparo
+):
+    """
+    Gestiona la animación de disparo y de caminar:
+      - Si disparar_flag==True: arranca la animación de disparo.
+      - Mientras disparo_playing: renderiza anim_disparo.
+      - Si no: si en_movimiento, renderiza anim_caminar.
+      - Si no: pinta el sprite estático (jugador_img).
+    Devuelve (nuevo_disparo_playing, nuevo_disparo_start_time).
+    """
+    # disparo justo disparado
+    if disparar_flag and not disparo_playing:
+        sonido_disparo.play() 
         disparo_playing = True
         disparo_start_time = tiempo_actual
-        disparo.reset() 
+        anim_disparo.reset()
+
+    # render de disparo
     if disparo_playing:
-        disparo.render(pantalla, (gaucho_x, gaucho_y))
-    
-        if tiempo_actual - disparo_start_time >= disparo_duracion:
+        anim_disparo.render(pantalla, (pos_x, pos_y))
+        if tiempo_actual - disparo_start_time >= duracion_disparo:
             disparo_playing = False
-    elif is_moving:
-        caminar.render(pantalla, (gaucho_x, gaucho_y))
+
+    # render de caminar
+    elif en_movimiento:
+        anim_caminar.render(pantalla, (pos_x, pos_y))
+
+    # render estático
     else:
-        pantalla.blit(gaucho, (gaucho_x, gaucho_y))
+        pantalla.blit(jugador_img, (pos_x, pos_y))
+
     return disparo_playing, disparo_start_time
 

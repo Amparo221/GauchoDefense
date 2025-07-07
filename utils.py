@@ -1,5 +1,5 @@
 import pygame, sys
-from config import ANCHO, ALTO, BLANCO, GRIS, fuente_mediana, fuente_grande
+from config import *
 
 
 def pedir_nombre_jugador(pantalla):

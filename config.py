@@ -12,6 +12,31 @@ COLOR_HOVER = (200, 200, 200)
 pygame.font.init()
 fuente_grande = pygame.font.SysFont("arial", 40)
 fuente_mediana = pygame.font.SysFont("arial", 30)
+FONT_HUD      = pygame.font.SysFont(None, 36)
+FONT_TITLE    = pygame.font.SysFont(None, 48)
 
 # Sonidos
 SONIDO_CLICK = "assets/sounds/click.ogg"
+RUTA_SONIDO_DISPARO = "assets/sounds/disparo_western_1.wav"
+RUTA_MUSICA_JUEGO = "assets/sounds/musica_western_1.wav"
+
+# Tamaños
+GAUCHO_SIZE = (111, 120)
+ZOMBIE_SIZE = (91, 120)
+BALA_SIZE   = (15, 5)
+
+# Gameplay
+COOLDOWN_DISPARO = 400   # ms mínimo entre disparos
+ZOMBIE_SPEED = 4
+
+# Rutas a assets
+RUTA_FONDO    = "assets/fondo.png"
+RUTA_GAUCHO   = "assets/gaucho.png"
+RUTA_CAMINAR  = "assets/caminar_3.gif"
+RUTA_DISPARO  = "assets/disparo_4.gif"
+RUTA_ZOMBIE   = "assets/zombie_5.gif"
+
+# ENEMIGOS
+SPAWN_TIEMPO = 1000
+SPAWN_DISPONIBLES = [50, 150, 250, 350, 450] # cambiar por random
+
