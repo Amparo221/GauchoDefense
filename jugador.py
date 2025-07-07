@@ -10,10 +10,12 @@ gaucho_y = 0
 gaucho_velocidad = 5
 
 
+def crear_balas(pantalla, balas, bala_img):
+    for bala in balas:
+        pantalla.blit(bala_img, (bala[0], bala[1]))
 
 
-
-def movimiento_jugador(y_actual, gaucho_velocidad):
+def movimiento_jugador(y_actual, gaucho_velocidad, ALTO):
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
     
@@ -26,8 +28,8 @@ def movimiento_jugador(y_actual, gaucho_velocidad):
 
     if y_actual < 0:
         y_actual = 0
-    if y_actual > 600 - gaucho_size[1]:
-        y_actual = 600 - gaucho_size[1]
+    if y_actual > ALTO - gaucho_size[1]:
+        y_actual = ALTO - gaucho_size[1]
         
     return y_actual, movimiento
 
@@ -53,4 +55,21 @@ def disparar_balas(lista_de_balas, tiempo_actual, ultimo_disparo, cooldown, juga
         return ultimo_disparo, disparar
     
     return ultimo_disparo, disparar
+
+def animaciones(pantalla, gaucho, disparar, tiempo_actual, disparo, disparo_duracion, is_moving, caminar, gaucho_x, gaucho_y, disparo_playing, disparo_start_time):
+    
+    if disparar:
+        disparo_playing = True
+        disparo_start_time = tiempo_actual
+        disparo.reset() 
+    if disparo_playing:
+        disparo.render(pantalla, (gaucho_x, gaucho_y))
+    
+        if tiempo_actual - disparo_start_time >= disparo_duracion:
+            disparo_playing = False
+    elif is_moving:
+        caminar.render(pantalla, (gaucho_x, gaucho_y))
+    else:
+        pantalla.blit(gaucho, (gaucho_x, gaucho_y))
+    return disparo_playing, disparo_start_time
 
