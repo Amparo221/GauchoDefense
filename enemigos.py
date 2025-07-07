@@ -6,7 +6,7 @@ spawn_indice = 0
 ultimo_spawn = 0 
 alturas_disponibles = [50, 150, 250, 350, 450] # cambiar por random
 
-zombie_img = gif_pygame.load("GauchoDefense/assets/zombie_5.gif")
+zombie_img = gif_pygame.load("assets/zombie_5.gif")
 zombie_tamanio = (91, 120)
 
 zombie_velocidad = 4

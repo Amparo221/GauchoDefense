@@ -4,21 +4,22 @@ from jugador import *
 from menu import *
 from config import *
 from enemigos import *
-
+from ranking import mostrar_ranking, add_score
+from utils import pedir_nombre_jugador, mostrar_creditos
 
 pygame.init()
 
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
-fondo = pygame.image.load("GauchoDefense/assets/fondo.png").convert()
+fondo = pygame.image.load("assets/fondo.png").convert()
 ancho_fondo, altura_fondo = fondo.get_size()  
 
-gaucho = pygame.image.load("GauchoDefense/assets/gaucho.png").convert_alpha()
+gaucho = pygame.image.load("assets/gaucho.png").convert_alpha()
 gaucho_size=(111,120)
 gaucho = pygame.transform.scale(gaucho, gaucho_size)
 
 
-caminar = gif_pygame.load("GauchoDefense/assets/caminar_3.gif")
-disparo = gif_pygame.load("GauchoDefense/assets/disparo_4.gif")
+caminar = gif_pygame.load("assets/caminar_3.gif")
+disparo = gif_pygame.load("assets/disparo_4.gif")
 
 tecla_presionada = pygame.key.get_pressed()
 
@@ -97,31 +98,44 @@ def iniciar_juego():
             pantalla.blit(texto_partida_perdida, (300, 250))
             pygame.display.flip()
             pygame.time.delay(5000)
+
+            nombre_jugador = pedir_nombre_jugador(pantalla)
+            add_score(nombre_jugador, puntaje)
+            mostrar_ranking(pantalla)
+
+            # Salir del loop y volver al menú
             running = False
-            continue # ------------- ACA DEBERIA VOLVER AL MENU
+            continue
 
 
         ultimo_spawn = spawn_zombie(tiempo_actual, ultimo_spawn, pantalla.get_width())
 
         mover_zombies()
 
+        # Detectar zombies que se escapan
+        for z in zombies[:]:
+            if z["rect"].right < 0:
+                zombies.remove(z)
+                vidas -= 1
+                if vidas <= 0:
+                    vidas = 0
+                    game_over = True
+
+        # Colisiones bala→zombie
         puntaje = detectar_colisiones(balas, puntaje)
 
+        # Colisiones zombie→jugador
         gaucho_rect = pygame.Rect(gaucho_x, gaucho_y, *gaucho_size)
         vidas = verificar_choque_con_jugador(gaucho_rect, vidas)
-
-        
-
         if vidas <= 0:
             game_over = True
             vidas = 0  # Ensure it doesn't go negative
             continue  # Skip the rest of the game loop
 
 
-
+        # Movimiento del jugador y disparo
         gaucho_y, is_moving = movimiento_jugador(gaucho_y, gaucho_velocidad, ALTO)
 
-        #estos variables quizas deban venir por parámetro?
         ultimo_disparo, disparar = disparar_balas(
             balas, 
             tiempo_actual, 
@@ -132,6 +146,7 @@ def iniciar_juego():
             gaucho_size
         )
 
+        # Dibujado
         crear_fondo()
         crear_balas(pantalla, balas, bala_img)
         
@@ -169,11 +184,11 @@ def main():
             iniciar_juego()
 
         elif accion == "ranking":
-            print("Ranking:")  
+            mostrar_ranking(pantalla)
             pygame.time.delay(1000)
 
         elif accion in ("créditos", "creditos"):
-            print("Créditos: Equipo Gaucho Defense")
+            mostrar_creditos(pantalla)
             pygame.time.delay(1000)
 
         elif accion == "salir":
