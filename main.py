@@ -3,6 +3,7 @@ from pygame.locals import *
 from jugador import *
 from menu import *
 from config import *
+from ranking import show_ranking, add_score
 
 pygame.init()
 
@@ -86,6 +87,7 @@ def main():
             iniciar_juego()
 
         elif accion == "ranking":
+            show_ranking(pantalla)
             print("Ranking:")  
             pygame.time.delay(1000)
 
