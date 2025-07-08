@@ -73,7 +73,7 @@ def mostrar_creditos(pantalla):
     nombres = ["Paula Ortega", "Amparo Moreno", "León Puddini"]
 
     # Pre-renderizo el título
-    titulo_surf = fuente_grande.render("Créditos", True, BLANCO)
+    titulo_surf = FUENTE_GRANDE.render("Créditos", True, BLANCO)
     titulo_rect = titulo_surf.get_rect(center=(ANCHO//2, 80))
 
     # Pre-renderizo de cada nombre
@@ -81,12 +81,12 @@ def mostrar_creditos(pantalla):
     separacion = 50
     y_inicial = 180
     for i, nombre in enumerate(nombres):
-        surf = fuente_mediana.render(nombre, True, BLANCO)
+        surf = FUENTE_MEDIANA.render(nombre, True, BLANCO)
         rect = surf.get_rect(center=(ANCHO//2, y_inicial + i * separacion))
         nombre_surfs.append((surf, rect))
 
     # Texto para volver al menu principal
-    volver_surf = fuente_mediana.render("Presiona ESC para volver", True, BLANCO)
+    volver_surf = FUENTE_MEDIANA.render("Presiona ESC para volver", True, BLANCO)
     volver_rect = volver_surf.get_rect(center=(ANCHO//2, ALTO - 40))
 
     while ejecutando:

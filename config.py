@@ -10,15 +10,36 @@ COLOR_HOVER = (200, 200, 200)
 
 # Fuentes
 pygame.font.init()
-fuente_grande = pygame.font.SysFont("arial", 40)
-fuente_mediana = pygame.font.SysFont("arial", 30)
+FUENTE_GRANDE = pygame.font.SysFont("arial", 40)
+FUENTE_MEDIANA = pygame.font.SysFont("arial", 30)
+FUENTE_TITULO_PRINCIPAL = pygame.font.SysFont("arial", 50)
 FONT_HUD      = pygame.font.SysFont(None, 36)
 FONT_TITLE    = pygame.font.SysFont(None, 48)
 
-# Sonidos
+# Rutas de audio
 SONIDO_CLICK = "assets/sounds/click.ogg"
-RUTA_SONIDO_DISPARO = "assets/sounds/disparo_western_1.wav"
-RUTA_MUSICA_JUEGO = "assets/sounds/musica_western_1.wav"
+RUTA_SONIDO_DISPARO = "assets/sounds/disparo_western_2.wav"
+RUTA_MUSICA_JUEGO = "assets/music/musica_juego_PorMilonga.mp3"
+RUTA_MUSICA_MENU = "assets/music/musica_menu_milonga.mp3"
+RUTA_SONIDO_MENU_CLICK = "assets/sounds/disparo_western_2.wav"
+SONIDO_HIT_ZOMBIE = "assets/sounds/zombie_hit.wav"
+SONIDO_HURT_GAUCHO = "assets/sounds/hurt_gaucho.ogg"
+SONIDO_GAME_OVER = "assets/sounds/game_over_1.wav"
+
+# Configuracion de audio
+AUDIO_BUFFER = 256     # menor = menor latencia (pero más CPU)
+AUDIO_FREQ   = 44100   # frecuencia de muestreo
+AUDIO_SIZE   = -16     # 16 bits signed
+AUDIO_CHANS  = 2       # estéreo
+VOLUMEN_MUSIC_MENU = {"volumen": 0.2, "fade_ms": 1000}  # volumen de la música del menú y fade-out al cambiar de pantalla
+VOLUMEN_MUSIC_JUEGO = {"volumen": 0.3, "fade_ms": 1000}  # volumen de la música del gameplay y fade-out al game over
+SFX_VOLUME = {
+    "disparo":    0.5,
+    "menu_click": 0.2,
+    "hit_zombie": 0.4,
+    "hurt_gaucho": 0.5,
+    "game_over": 0.7
+}
 
 # Tamaños
 GAUCHO_SIZE = (111, 120)
