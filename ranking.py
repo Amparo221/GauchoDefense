@@ -1,9 +1,10 @@
 import json
 import os
 import pygame
-from config import ANCHO, ALTO, fuente_mediana, BLANCO, GRIS
+import sys
+from config import ANCHO, ALTO, fuente_mediana, BLANCO, NEGRO
 
-ranking_path = "data/ranking.json"
+ranking_path = "GauchoDefense/data/ranking.json"
 
 def cargar_puntuaciones(path=ranking_path):
     """
@@ -78,7 +79,7 @@ def mostrar_ranking(screen, path=ranking_path):
                 running = False
 
         # 4.3) Dibujado fondo
-        screen.fill(GRIS)
+        screen.fill(NEGRO)
 
         # 4.4) Título
         titulo_surf = fuente_mediana.render("Top 5 Gaucho Defense", True, BLANCO)

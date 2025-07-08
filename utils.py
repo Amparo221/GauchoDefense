@@ -12,8 +12,7 @@ def pedir_nombre_jugador(pantalla):
     tiempo_cursor = 0
 
     # Fuente y rectángulo de prompt
-    fuente_input = pygame.font.SysFont(None, 48)
-    prompt_surf = fuente_input.render("Ingresa tu nombre:", True, BLANCO)
+    prompt_surf = FONT_TITLE.render("Ingresa tu nombre:", True, BLANCO)
     prompt_rect = prompt_surf.get_rect(center=(ANCHO//2, ALTO//2 - 50))
 
     # Bucle de entrada
@@ -42,11 +41,11 @@ def pedir_nombre_jugador(pantalla):
             cursor_visible = not cursor_visible
 
         # Dibujado
-        pantalla.fill(GRIS)
+        pantalla.fill(NEGRO)
         pantalla.blit(prompt_surf, prompt_rect)
 
         # Renderizado del teclado
-        text_surf = fuente_input.render(nombre, True, BLANCO)
+        text_surf = FONT_TITLE.render(nombre, True, BLANCO)
         # Calculo del rect de texto para centrar horizontalmente
         text_rect = text_surf.get_rect(midtop=(ANCHO//2, ALTO//2))
         pantalla.blit(text_surf, text_rect)
@@ -97,7 +96,7 @@ def mostrar_creditos(pantalla):
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
                 ejecutando = False
 
-        pantalla.fill(GRIS)
+        pantalla.fill(NEGRO)
         pantalla.blit(titulo_surf, titulo_rect)
         for surf, rect in nombre_surfs:
             pantalla.blit(surf, rect)

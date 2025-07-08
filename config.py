@@ -8,17 +8,25 @@ NEGRO = (0, 0, 0)
 GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
 
+# Rutas a assets
+RUTA_FONDO    = "GauchoDefense/assets/images/fondo.png"
+RUTA_GAUCHO   = "GauchoDefense/assets/images/gaucho.png"
+RUTA_CAMINAR  = "GauchoDefense/assets/images/caminar_3.gif"
+RUTA_DISPARO  = "GauchoDefense/assets/images/disparo_4.gif"
+RUTA_ZOMBIE   = "GauchoDefense/assets/images/zombie_5.gif"
+RUTA_FUENTE = "GauchoDefense/assets/fonts/Jersey10-Regular.ttf"
+
 # Fuentes
 pygame.font.init()
-fuente_grande = pygame.font.SysFont("arial", 40)
-fuente_mediana = pygame.font.SysFont("arial", 30)
-FONT_HUD      = pygame.font.SysFont(None, 36)
-FONT_TITLE    = pygame.font.SysFont(None, 48)
+fuente_grande = pygame.font.Font(RUTA_FUENTE, 40)
+fuente_mediana = pygame.font.Font(RUTA_FUENTE, 30)
+FONT_HUD      = pygame.font.Font(RUTA_FUENTE, 36)
+FONT_TITLE    = pygame.font.Font(RUTA_FUENTE, 48)
 
 # Sonidos
-SONIDO_CLICK = "assets/sounds/click.ogg"
-RUTA_SONIDO_DISPARO = "assets/sounds/disparo_western_1.wav"
-RUTA_MUSICA_JUEGO = "assets/sounds/musica_western_1.wav"
+SONIDO_CLICK = "GauchoDefense/assets/sounds/click.ogg"
+RUTA_SONIDO_DISPARO = "GauchoDefense/assets/sounds/disparo_western_1.wav"
+RUTA_MUSICA_JUEGO = "GauchoDefense/assets/sounds/musica_western_1.wav"
 
 # Tamaños
 GAUCHO_SIZE = (111, 120)
@@ -26,15 +34,9 @@ ZOMBIE_SIZE = (91, 120)
 BALA_SIZE   = (15, 5)
 
 # Gameplay
-COOLDOWN_DISPARO = 400   # ms mínimo entre disparos
+COOLDOWN_DISPARO = 500   # ms mínimo entre disparos
 ZOMBIE_SPEED = 4
-
-# Rutas a assets
-RUTA_FONDO    = "assets/fondo.png"
-RUTA_GAUCHO   = "assets/gaucho.png"
-RUTA_CAMINAR  = "assets/caminar_3.gif"
-RUTA_DISPARO  = "assets/disparo_4.gif"
-RUTA_ZOMBIE   = "assets/zombie_5.gif"
+BALA_SPEED = 15
 
 # ENEMIGOS
 SPAWN_TIEMPO = 1000

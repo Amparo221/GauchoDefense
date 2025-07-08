@@ -24,7 +24,7 @@ def crear_estado_inicial():
     return {
         "jugador": {
             "x":0,
-            "y":0, 
+            "y":0,
             "velocidad_movimiento":5, 
             "en_movimiento": False
         },
@@ -116,8 +116,7 @@ def actualizar_juego(estado, assets):
         ultimo_disparo   = estado["tiempos"]["ultimo_disparo"],
         cooldown         = COOLDOWN_DISPARO,
         jugador_x        = estado["jugador"]["x"],
-        jugador_y        = estado["jugador"]["y"],
-        jugador_size     = GAUCHO_SIZE
+        jugador_y        = estado["jugador"]["y"]
     )
     estado["tiempos"]["ultimo_disparo"] = ultimo_tiro
     estado["flags"]["disparar"]         = disparar_flag

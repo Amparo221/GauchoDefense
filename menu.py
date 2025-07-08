@@ -1,6 +1,6 @@
 import pygame
 import sys
-from config import ANCHO, ALTO, fuente_grande, BLANCO, GRIS, COLOR_HOVER, SONIDO_CLICK
+from config import ANCHO, ALTO, fuente_grande, BLANCO, COLOR_HOVER, SONIDO_CLICK, NEGRO
 
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 clock = pygame.time.Clock()
@@ -80,7 +80,7 @@ def mostrar_menu():
     botones = crear_botones()
 
     while True:
-        pantalla.fill(GRIS)        # color de fondo
+        pantalla.fill(NEGRO)        # color de fondo
         dibujar_botones(botones)   # visualizar todos
 
         accion = manejar_eventos(botones)
