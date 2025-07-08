@@ -26,7 +26,11 @@ def cargar_assets():
     bala_img.fill(NEGRO)
 
     # Enemigos:
-    zombie_img = gif_pygame.load(RUTA_ZOMBIE)
+    zombie_img = gif_pygame.load(RUTA_ZOMBIE_1)
+
+    zombie_muerto = pygame.image.load(RUTA_ZOMBIE_MUERTO).convert_alpha()
+    zombie_muerto = pygame.transform.scale(zombie_muerto, ZOMBIE_SIZE)
+
 
     return {
         "pantalla": pantalla,
@@ -38,6 +42,7 @@ def cargar_assets():
         "disparo": disparo,
         "bala_img": bala_img,
         "zombie_img": zombie_img,
+        "zombie_muerto": zombie_muerto,
         "sonido_disparo": sonido_disparo,
         "musica_juego": RUTA_MUSICA_JUEGO
     }
