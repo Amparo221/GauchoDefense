@@ -22,7 +22,7 @@ RUTA_MUSICA_JUEGO = "assets/sounds/musica_western_1.wav"
 
 # Tamaños
 GAUCHO_SIZE = (111, 120)
-ZOMBIE_SIZE = (91, 120)
+ZOMBIE_SIZE = (100, 100)
 BALA_SIZE   = (15, 5)
 
 # Gameplay
@@ -31,11 +31,12 @@ ZOMBIE_SPEED = 4
 GAUCHO_SPEED = 5
 
 # Rutas a assets
-RUTA_FONDO    = "assets/fondo.png"
-RUTA_GAUCHO   = "assets/gaucho.png"
-RUTA_CAMINAR  = "assets/caminar_3.gif"
-RUTA_DISPARO  = "assets/disparo_4.gif"
-RUTA_ZOMBIE   = "assets/zombie_5.gif"
+RUTA_FONDO           =  "assets/fondo.png"
+RUTA_GAUCHO          =  "assets/gaucho.png"
+RUTA_ZOMBIE_1        =  "assets/sprite_zombie_2.gif"
+RUTA_CAMINAR         =  "assets/caminar_3.gif"
+RUTA_DISPARO         =  "assets/disparo_4.gif"
+RUTA_ZOMBIE_MUERTO   =  "assets/zombie_muerto.png"
 
 # Archivos de datos
 RANKING_PATH = "data/ranking.json"

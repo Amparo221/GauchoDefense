@@ -1,6 +1,6 @@
 import pygame, sys
 from jugador     import movimiento_jugador, disparar_balas, crear_balas, generar_animaciones
-from enemigos   import spawn_zombie, mover_zombies, detectar_colisiones, verificar_choque_con_jugador
+from enemigos   import spawn_zombie, mover_zombies, detectar_colisiones, verificar_choque_con_jugador, remover_zombies_muertos
 from ranking    import agregar_puntuacion
 from utils      import pedir_nombre_jugador
 from config import *
@@ -83,8 +83,12 @@ def actualizar_juego(estado, assets):
     estado["puntuacion"] = detectar_colisiones(
         balas = estado["balas"],
         puntuacion = estado["puntuacion"],
-        lista_enemigos = estado["enemigos"]
+        lista_enemigos = estado["enemigos"],
+        zombie_muerto_img=assets["zombie_muerto"],
+        tiempo_ahora = tiempo_actual
     )
+
+    remover_zombies_muertos(estado["enemigos"], tiempo_actual)
 
     # Colisiones zombie-jugador = restar vidas
     player_rect = pygame.Rect(
