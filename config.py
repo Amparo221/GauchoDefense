@@ -28,6 +28,7 @@ BALA_SIZE   = (15, 5)
 # Gameplay
 COOLDOWN_DISPARO = 400   # ms mínimo entre disparos
 ZOMBIE_SPEED = 4
+GAUCHO_SPEED = 5
 
 # Rutas a assets
 RUTA_FONDO    = "assets/fondo.png"
@@ -35,6 +36,9 @@ RUTA_GAUCHO   = "assets/gaucho.png"
 RUTA_CAMINAR  = "assets/caminar_3.gif"
 RUTA_DISPARO  = "assets/disparo_4.gif"
 RUTA_ZOMBIE   = "assets/zombie_5.gif"
+
+# Archivos de datos
+RANKING_PATH = "data/ranking.json"
 
 # ENEMIGOS
 SPAWN_TIEMPO = 1000

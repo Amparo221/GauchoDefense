@@ -6,7 +6,6 @@ from juego import iniciar_juego
 from assets import cargar_assets
 
 
-
 def main():
     pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=64)
     pygame.init()

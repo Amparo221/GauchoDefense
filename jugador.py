@@ -1,46 +1,42 @@
 import pygame
 from pygame.locals import *
-
-
-
-gaucho_size = (150, 150)
+from config import GAUCHO_SIZE, GAUCHO_SPEED
 
 gaucho_x = 0
 gaucho_y = 0
-gaucho_velocidad = 5
-
 
 def crear_balas(pantalla, balas, bala_img):
     for bala in balas:
         pantalla.blit(bala_img, (bala[0], bala[1]))
 
 
-def movimiento_jugador(y_actual, gaucho_velocidad, ALTO):
+def movimiento_jugador(y_actual, GAUCHO_SPEED, ALTO):
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
     
     if tecla_presionada[K_w]:
-        y_actual -= gaucho_velocidad
+        y_actual -= GAUCHO_SPEED
         movimiento = True
     if tecla_presionada[K_s]:
-        y_actual += gaucho_velocidad
+        y_actual += GAUCHO_SPEED
         movimiento = True
 
     if y_actual < 0:
         y_actual = 0
-    if y_actual > ALTO - gaucho_size[1]:
-        y_actual = ALTO - gaucho_size[1]
+    if y_actual > ALTO - GAUCHO_SIZE[1]:
+        y_actual = ALTO - GAUCHO_SIZE[1]
         
     return y_actual, movimiento
 
 
 
-def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, cooldown, jugador_x, jugador_y, jugador_size):
-    disparar=False
+def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, cooldown, jugador_x, jugador_y, jugador_size, 
+                   ancho_pantalla):
+    disparar = False
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
         bala[0] += bala_velocidad
-        if bala[0] > 1000:
+        if bala[0] > ancho_pantalla:
             lista_de_balas.remove(bala)
     
     tecla_presionada = pygame.key.get_pressed()

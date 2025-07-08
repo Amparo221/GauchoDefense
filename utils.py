@@ -70,7 +70,7 @@ def mostrar_creditos(pantalla):
     ejecutando = True
 
     # Lista de creadores
-    nombres = ["Paula", "Amparo", "León"]
+    nombres = ["Paula Ortega", "Amparo Moreno", "León Puddini"]
 
     # Pre-renderizo el título
     titulo_surf = fuente_grande.render("Créditos", True, BLANCO)

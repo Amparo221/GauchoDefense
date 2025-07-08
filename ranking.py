@@ -1,11 +1,10 @@
 import json
 import os
-import pygame
-from config import ANCHO, ALTO, fuente_mediana, BLANCO, GRIS
+import pygame, sys
+from config import ANCHO, ALTO, fuente_mediana, BLANCO, GRIS, RANKING_PATH
 
-ranking_path = "data/ranking.json"
 
-def cargar_puntuaciones(path=ranking_path):
+def cargar_puntuaciones(path=RANKING_PATH):
     """
     Lee el archivo JSON y devuelve una lista de dicts:
     [
@@ -18,13 +17,9 @@ def cargar_puntuaciones(path=ranking_path):
     if not os.path.exists(path):
         return []
     with open(path, "r", encoding="utf-8") as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            # En caso de archivo corrupto, lo sobrescribimos después
-            return []
+        return json.load(f)
 
-def guardar_puntuaciones(puntuaciones, path=ranking_path):
+def guardar_puntuaciones(puntuaciones, path=RANKING_PATH):
     """
     Escribe la lista de dicts 'puntuaciones' en el archivo JSON.
     """
@@ -32,12 +27,13 @@ def guardar_puntuaciones(puntuaciones, path=ranking_path):
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def agregar_puntuacion(nombre, puntaje, path=ranking_path):
+def agregar_puntuacion(nombre, puntaje, path=RANKING_PATH):
     """
     Carga los puntuaciones existentes, añade el nuevo, guarda de nuevo.
     """
     puntuaciones = cargar_puntuaciones(path)
     # Añadimos al final
+    # Solo agregar las puntuaciones más altas.
     puntuaciones.append({"nombre": nombre, "puntaje": puntaje})
     guardar_puntuaciones(puntuaciones, path)
 
@@ -52,7 +48,7 @@ def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
     return puntuaciones_ordenadas[:top_n]
 
 
-def mostrar_ranking(screen, path=ranking_path):
+def mostrar_ranking(screen, path=RANKING_PATH):
     """
     Dibuja el top-5 en pantalla:
     - screen: Surface de Pygame donde dibujar.

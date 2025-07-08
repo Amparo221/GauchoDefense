@@ -5,6 +5,7 @@ from ranking    import agregar_puntuacion
 from utils      import pedir_nombre_jugador
 from config import *
 from renderer import dibujar_fondo, dibujar_hud, dibujar_enemigos
+from ranking import mostrar_ranking
 
 MODE_QUIT = "quit"
 MODE_MENU = "menu"
@@ -117,7 +118,8 @@ def actualizar_juego(estado, assets):
         cooldown         = COOLDOWN_DISPARO,
         jugador_x        = estado["jugador"]["x"],
         jugador_y        = estado["jugador"]["y"],
-        jugador_size     = GAUCHO_SIZE
+        jugador_size     = GAUCHO_SIZE,
+        ancho_pantalla   = ANCHO
     )
     estado["tiempos"]["ultimo_disparo"] = ultimo_tiro
     estado["flags"]["disparar"]         = disparar_flag
@@ -170,6 +172,7 @@ def accionar_game_over(pantalla, estado):
     # pedir nombre y guardar score
     name = pedir_nombre_jugador(pantalla)
     agregar_puntuacion(name, estado["puntuacion"])
+    mostrar_ranking(pantalla)
 
 def iniciar_juego(assets):
     pantalla = assets["pantalla"]
