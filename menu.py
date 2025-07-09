@@ -1,12 +1,11 @@
 import pygame
-import audio
-from assets import cargar_assets
-from renderer import dibujar_fondo
+from game.audio import reproducir_musica, cargar_sonido, detener_musica, reproducir_sonido
+from assets.assets import cargar_assets
+from ui.renderer import dibujar_fondo
 from config import *
 
 # Creamos reloj local para controlar FPS
 eclock = pygame.time.Clock()
-
 
 def crear_botones(musica_pausada: bool) -> list[dict]:
     """
@@ -71,14 +70,14 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
             if evento.key == pygame.K_RETURN and seleccion is not None:
                 return botones[seleccion]["clave"], musica_pausada
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1 and seleccion is not None:
-            audio.reproducir_sonido(sonidos_menu, "click")
+            reproducir_sonido(sonidos_menu, "click")
             clave = botones[seleccion]["clave"]
             if clave in ("pausar música", "reanudar música"):
                 # Alternar música de fondo
                 if not musica_pausada:
-                    audio.detener_musica(VOLUMEN_MUSIC_MENU["fade_ms"])
+                    detener_musica(VOLUMEN_MUSIC_MENU["fade_ms"])
                 else:
-                    audio.reproducir_musica(
+                    reproducir_musica(
                         RUTA_MUSICA_MENU,
                         loops=-1,
                         volume=VOLUMEN_MUSIC_MENU["volumen"],
@@ -90,7 +89,7 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
     return None, musica_pausada
 
 
-def mostrar_menu() -> str:
+def mostrar_menu(assets, sonido) -> str:
     """
     Bucle principal del menú:
       1. Carga assets y sonidos
@@ -98,12 +97,12 @@ def mostrar_menu() -> str:
       3. Retorna la acción seleccionada
     """
     # 1) Inicialización local
-    datos = cargar_assets()
+    datos = assets
     pantalla = datos["pantalla"]
-    fondo = datos["fondo"]
+    fondo = datos["fondo_menu"]
     ancho_fondo = datos["ancho_fondo"]
     alto_fondo = datos["altura_fondo"]
-    sonidos_menu = audio.cargar_sonido()
+    sonidos_menu = sonido
     musica_pausada = False
 
     ejecucion = True

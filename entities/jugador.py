@@ -1,22 +1,22 @@
 import pygame
 from pygame.locals import *
-from config import GAUCHO_SIZE, GAUCHO_SPEED
-from audio import reproducir_sonido
+from config import GAUCHO_SIZE, COOLDOWN_DISPARO, ANCHO
+from game.audio import reproducir_sonido
 
 def crear_balas(pantalla, balas, bala_img):
     for bala in balas:
         pantalla.blit(bala_img, (bala[0], bala[1]))
 
 
-def movimiento_jugador(y_actual, GAUCHO_SPEED, ALTO):
+def movimiento_jugador(y_actual, velcidad_movimiento, ALTO):
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
-    
+
     if tecla_presionada[K_w]:
-        y_actual -= GAUCHO_SPEED
+        y_actual -= velcidad_movimiento
         movimiento = True
     if tecla_presionada[K_s]:
-        y_actual += GAUCHO_SPEED
+        y_actual += velcidad_movimiento
         movimiento = True
 
     if y_actual < 0:
@@ -28,8 +28,8 @@ def movimiento_jugador(y_actual, GAUCHO_SPEED, ALTO):
 
 
 
-def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, cooldown: int, jugador_x: int, jugador_y: int, jugador_size: int, 
-                   ancho_pantalla: int, sonido_disparo: dict) -> tuple[int, bool]:
+def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, jugador_x: int, jugador_y: int, 
+                   sonido_disparo: dict) -> tuple[int, bool]:
     """
     - Gestiona movimiento y expiración de balas.
     - Si SPACE y cooldown ok, crea una bala y suena el SFX.
@@ -38,26 +38,24 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
         bala[0] += bala_velocidad
-        if bala[0] > ancho_pantalla:
+        if bala[0] > ANCHO:
             lista_de_balas.remove(bala)
     
     disparar = False
     tecla_presionada = pygame.key.get_pressed()
-    if tecla_presionada[K_SPACE] and tiempo_actual - ultimo_disparo >= cooldown:
+    if tecla_presionada[K_SPACE] and tiempo_actual - ultimo_disparo >= COOLDOWN_DISPARO:
         disparar=True
-        bala_x = jugador_x + jugador_size[0]
-        bala_y = jugador_y + ((jugador_size[1] // 2)-15)
+        bala_x = jugador_x + GAUCHO_SIZE[0]
+        bala_y = jugador_y + ((GAUCHO_SIZE[1] // 2)-15)
         lista_de_balas.append([bala_x, bala_y])
 
         # sonido disparo despues de crear la bala
         reproducir_sonido(sonido_disparo, "disparo")
 
         return tiempo_actual, disparar
-
-    if tiempo_actual - ultimo_disparo < 300:
-        return ultimo_disparo, disparar
     
     return ultimo_disparo, disparar
+
 
 def generar_animaciones(
     pantalla,
@@ -102,4 +100,3 @@ def generar_animaciones(
         pantalla.blit(jugador_img, (pos_x, pos_y))
 
     return disparo_playing, disparo_start_time
-

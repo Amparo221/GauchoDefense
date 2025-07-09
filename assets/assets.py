@@ -8,8 +8,13 @@ def cargar_assets():
     pygame.display.set_caption("Gaucho Defense")  # Título de la ventana
 
     # Fondo
-    fondo = pygame.image.load(RUTA_FONDO).convert()
+    fondo = pygame.image.load(RUTA_FONDO_JUEGO).convert_alpha()
+    fondo = pygame.transform.scale(fondo, FONDO_SIZE)
     ancho_fondo, altura_fondo = fondo.get_size()
+
+    # Fondo del menú
+    fondo_menu = pygame.image.load(RUTA_FONDO_MENU).convert_alpha()
+    fondo_menu = pygame.transform.scale(fondo_menu, FONDO_SIZE)
 
     # Gaucho
     gaucho = pygame.image.load(RUTA_GAUCHO).convert_alpha()
@@ -33,6 +38,7 @@ def cargar_assets():
     return {
         "pantalla": pantalla,
         "fondo": fondo,
+        "fondo_menu": fondo_menu,
         "ancho_fondo": ancho_fondo,
         "altura_fondo": altura_fondo,
         "gaucho": gaucho,

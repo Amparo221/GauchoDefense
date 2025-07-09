@@ -1,118 +1,22 @@
 [
   {
-    "nombre": "ANÓNIMO",
-    "puntaje": 3
-  },
-  {
-    "nombre": "ANÓNIMO",
-    "puntaje": 4
-  },
-  {
-    "nombre": "ANÓNIMO",
-    "puntaje": 4
-  },
-  {
-    "nombre": "pepe",
-    "puntaje": 8
-  },
-  {
-    "nombre": "lion",
-    "puntaje": 28
-  },
-  {
-    "nombre": "pepe",
-    "puntaje": 2
-  },
-  {
     "nombre": "asd",
-    "puntaje": 7
-  },
-  {
-    "nombre": "ricardo",
-    "puntaje": 5
-  },
-  {
-    "nombre": "qwe",
-    "puntaje": 3
-  },
-  {
-    "nombre": "asd",
-    "puntaje": 5
-  },
-  {
-    "nombre": "ANÓNIMO",
-    "puntaje": 15
-  },
-  {
-    "nombre": "asdasd",
     "puntaje": 21
   },
   {
-    "nombre": "wsadaw",
-    "puntaje": 5
+    "nombre": "dd",
+    "puntaje": 12
   },
   {
-    "nombre": "asd",
+    "nombre": "asd3",
+    "puntaje": 10
+  },
+  {
+    "nombre": "ddd",
     "puntaje": 9
   },
   {
-    "nombre": "asdasd",
-    "puntaje": 5
-  },
-  {
-    "nombre": "pao",
-    "puntaje": 3
-  },
-  {
-    "nombre": "lep",
-    "puntaje": 2
-  },
-  {
-    "nombre": "\u001bwdf",
-    "puntaje": 3
-  },
-  {
-    "nombre": "\u001bdef",
-    "puntaje": 1
-  },
-  {
-    "nombre": "tincho_test",
-    "puntaje": 3
-  },
-  {
-    "nombre": "prueba1",
-    "puntaje": 17
-  },
-  {
-    "nombre": "asdasd",
-    "puntaje": 4
-  },
-  {
-    "nombre": "carlos",
-    "puntaje": 1
-  },
-  {
-    "nombre": "sasd",
-    "puntaje": 2
-  },
-  {
-    "nombre": "peper",
-    "puntaje": 6
-  },
-  {
-    "nombre": "asdasd",
-    "puntaje": 4
-  },
-  {
-    "nombre": "asdasd",
-    "puntaje": 1
-  },
-  {
-    "nombre": "asdasd",
-    "puntaje": 0
-  },
-  {
-    "nombre": "asdasd",
-    "puntaje": 16
+    "nombre": "pepe",
+    "puntaje": 7
   }
 ]
