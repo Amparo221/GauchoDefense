@@ -9,12 +9,13 @@ GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
 
 # Rutas a assets
-RUTA_FONDO    = "GauchoDefense/assets/images/fondo.png"
-RUTA_GAUCHO   = "GauchoDefense/assets/images/gaucho.png"
-RUTA_CAMINAR  = "GauchoDefense/assets/images/caminar_3.gif"
-RUTA_DISPARO  = "GauchoDefense/assets/images/disparo_4.gif"
-RUTA_ZOMBIE   = "GauchoDefense/assets/images/zombie_5.gif"
-RUTA_FUENTE = "GauchoDefense/assets/fonts/Jersey10-Regular.ttf"
+RUTA_FONDO         = "GauchoDefense/assets/images/fondo.png"
+RUTA_GAUCHO        = "GauchoDefense/assets/images/gaucho.png"
+RUTA_ZOMBIE_1      = "GauchoDefense/assets/images/sprite_zombie.gif"
+RUTA_CAMINAR       = "GauchoDefense/assets/images/caminar.gif"
+RUTA_DISPARO       = "GauchoDefense/assets/images/disparo.gif"
+RUTA_FUENTE        = "GauchoDefense/assets/fonts/Jersey10-Regular.ttf"
+RUTA_ZOMBIE_MUERTO = "GauchoDefense/assets/images/zombie_muerto.png"
 
 # Fuentes
 pygame.font.init()
