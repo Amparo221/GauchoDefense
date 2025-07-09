@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from config import GAUCHO_SIZE, COOLDOWN_DISPARO, ANCHO
-from audio import reproducir_sonido
+from game.audio import reproducir_sonido
 
 def crear_balas(pantalla, balas, bala_img):
     for bala in balas:
@@ -11,7 +11,7 @@ def crear_balas(pantalla, balas, bala_img):
 def movimiento_jugador(y_actual, velcidad_movimiento, ALTO):
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
-    
+
     if tecla_presionada[K_w]:
         y_actual -= velcidad_movimiento
         movimiento = True
@@ -53,11 +53,9 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
         reproducir_sonido(sonido_disparo, "disparo")
 
         return tiempo_actual, disparar
-
-    if tiempo_actual - ultimo_disparo < 300:
-        return ultimo_disparo, disparar
     
     return ultimo_disparo, disparar
+
 
 def generar_animaciones(
     pantalla,
@@ -102,4 +100,3 @@ def generar_animaciones(
         pantalla.blit(jugador_img, (pos_x, pos_y))
 
     return disparo_playing, disparo_start_time
-

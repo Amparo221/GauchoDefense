@@ -8,7 +8,7 @@ def cargar_assets():
     pygame.display.set_caption("Gaucho Defense")  # Título de la ventana
 
     # Fondo
-    fondo = pygame.image.load(RUTA_FONDO).convert_alpha()
+    fondo = pygame.image.load(RUTA_FONDO_JUEGO).convert_alpha()
     fondo = pygame.transform.scale(fondo, FONDO_SIZE)
     ancho_fondo, altura_fondo = fondo.get_size()
 

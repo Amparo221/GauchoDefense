@@ -1,7 +1,7 @@
 import pygame
 import random
 from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, RUTA_ZOMBIE_MUERTO
-from audio import reproducir_sonido
+from game.audio import reproducir_sonido
 
 
 def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, zombie_img):

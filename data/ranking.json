@@ -1,22 +1,22 @@
 [
   {
+    "nombre": "asd",
+    "puntaje": 21
+  },
+  {
+    "nombre": "dd",
+    "puntaje": 12
+  },
+  {
     "nombre": "asd3",
     "puntaje": 10
   },
   {
-    "nombre": "asd",
-    "puntaje": 4
+    "nombre": "ddd",
+    "puntaje": 9
   },
   {
-    "nombre": "asd2",
-    "puntaje": 3
-  },
-  {
-    "nombre": "aparezco",
-    "puntaje": 3
-  },
-  {
-    "nombre": "test1",
-    "puntaje": 1
+    "nombre": "pepe",
+    "puntaje": 7
   }
 ]

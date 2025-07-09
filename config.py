@@ -9,22 +9,23 @@ NEGRO = (0, 0, 0)
 GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
 
+# Rutas a assets
+RUTA_FONDO_JUEGO   = "assets/images/fondo.png"
+RUTA_FONDO_MENU    = "assets/images/fondo_menu.png"
+RUTA_GAUCHO        = "assets/images/gaucho.png"
+RUTA_ZOMBIE_1      = "assets/images/sprite_zombie.gif"
+RUTA_CAMINAR       = "assets/images/caminar.gif"
+RUTA_DISPARO       = "assets/images/disparo.gif"
+RUTA_FUENTE        = "assets/fonts/Jersey10-Regular.ttf"
+RUTA_ZOMBIE_MUERTO = "assets/images/zombie_muerto.png"
+
 # Fuentes
 pygame.font.init()
-FUENTE_GRANDE = pygame.font.SysFont("arial", 40)
-FUENTE_MEDIANA = pygame.font.SysFont("arial", 30)
-FUENTE_TITULO_PRINCIPAL = pygame.font.SysFont("arial", 50)
-FONT_HUD      = pygame.font.SysFont(None, 36)
-FONT_TITLE    = pygame.font.SysFont(None, 48)
-
-# Rutas a assets
-RUTA_FONDO           =  "assets/fondo_juego.png"
-RUTA_FONDO_MENU      =  "assets/fondo_menu.png"
-RUTA_GAUCHO          =  "assets/gaucho.png"
-RUTA_ZOMBIE_1        =  "assets/sprite_zombie_2.gif"
-RUTA_CAMINAR         =  "assets/caminar_3.gif"
-RUTA_DISPARO         =  "assets/disparo_4.gif"
-RUTA_ZOMBIE_MUERTO   =  "assets/zombie_muerto.png"
+FUENTE_GRANDE = pygame.font.Font(RUTA_FUENTE, 40)
+FUENTE_MEDIANA = pygame.font.Font(RUTA_FUENTE, 30)
+FUENTE_TITULO_PRINCIPAL = pygame.font.Font(RUTA_FUENTE, 80)
+FONT_HUD      = pygame.font.Font(RUTA_FUENTE, 36)
+FONT_TITLE    = pygame.font.Font(RUTA_FUENTE, 48)
 
 # Rutas de audio
 SONIDO_CLICK = "assets/sounds/click.ogg"
@@ -58,15 +59,19 @@ BALA_SIZE   = (15, 5)
 FONDO_SIZE = (ANCHO, ALTO)
 
 # Gameplay
-COOLDOWN_DISPARO = 400   # ms mínimo entre disparos
+COOLDOWN_DISPARO = 500   # ms mínimo entre disparos
 ZOMBIE_SPEED = 4
 GAUCHO_SPEED = 5
 
-
 # Archivos de datos
 RANKING_PATH = "data/ranking.json"
+BALA_SPEED = 15
 
 # ENEMIGOS
 SPAWN_TIEMPO = 1000
 SPAWN_DISPONIBLES = [50, 150, 250, 350, 450] # cambiar por random
+
+# Menu
+MODE_QUIT = "quit"
+MODE_MENU = "menu"
 
