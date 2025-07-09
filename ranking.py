@@ -5,18 +5,23 @@ from config import *
 
 def cargar_puntuaciones(path=RANKING_PATH):
     """
-    Lee el archivo JSON y devuelve una lista de dicts:
-    [
-      {"nombre": "Pepe", "puntaje": 1200},
-      {"nombre": "Ana",  "puntaje":  900},
-      ...
-    ]
-    Si no existe el archivo, devuelve lista vacía.
+    Lee el archivo JSON y devuelve siempre el top-5 ordenado.
+    Si no existe, está vacío o no contiene JSON válido, devuelve [].
     """
-    if not os.path.exists(path):
+    # Si no existe o está completamente vacío
+    if not os.path.exists(path) or os.path.getsize(path) == 0:
         return []
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            lista = json.load(f)
+    except json.JSONDecodeError:
+        # El archivo existe pero no tiene JSON válido
+        return []
+
+    # Ordenamos de mayor a menor y truncamos a 5
+    lista.sort(key=lambda x: x["puntaje"], reverse=True)
+    return lista[:5]
 
 def guardar_puntuaciones(puntuaciones, path=RANKING_PATH):
     """
@@ -26,15 +31,22 @@ def guardar_puntuaciones(puntuaciones, path=RANKING_PATH):
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def agregar_puntuacion(nombre, puntaje, path=RANKING_PATH):
+def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
     """
-    Carga los puntuaciones existentes, añade el nuevo, guarda de nuevo.
+    Si hay menos de 5 puntajes o el nuevo es >= mínimo del top-5,
+    lo inserta, reordena, graba y devuelve True. Si no, no graba
+    y devuelve False.
     """
-    puntuaciones = cargar_puntuaciones(path)
-    # Añadimos al final
-    # Solo agregar las puntuaciones más altas.
-    puntuaciones.append({"nombre": nombre, "puntaje": puntaje})
-    guardar_puntuaciones(puntuaciones, path)
+    scores = cargar_puntuaciones(path)
+    if len(scores) < 5 or puntaje >= scores[-1]["puntaje"]:
+        scores.append({"nombre": nombre, "puntaje": puntaje})
+        scores.sort(key=lambda x: x["puntaje"], reverse=True)
+        scores = scores[:5]
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(scores, f, indent=2, ensure_ascii=False)
+        return True
+    return False
 
 
 def obtener_mejores_puntuaciones(puntuaciones, top_n=5):

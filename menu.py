@@ -100,7 +100,7 @@ def mostrar_menu() -> str:
     # 1) Inicialización local
     datos = cargar_assets()
     pantalla = datos["pantalla"]
-    fondo = datos["fondo"]
+    fondo = datos["fondo_menu"]
     ancho_fondo = datos["ancho_fondo"]
     alto_fondo = datos["altura_fondo"]
     sonidos_menu = audio.cargar_sonido()

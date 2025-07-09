@@ -125,11 +125,8 @@ def actualizar_juego(estado, assets, sonido):
         lista_de_balas   = estado["balas"],
         tiempo_actual    = tiempo_actual,
         ultimo_disparo   = estado["tiempos"]["ultimo_disparo"],
-        cooldown         = COOLDOWN_DISPARO,
         jugador_x        = estado["jugador"]["x"],
         jugador_y        = estado["jugador"]["y"],
-        jugador_size     = GAUCHO_SIZE,
-        ancho_pantalla   = ANCHO,
         sonido_disparo   = sonido
     )
     estado["tiempos"]["ultimo_disparo"] = ultimo_tiro
