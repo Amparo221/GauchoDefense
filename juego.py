@@ -1,10 +1,12 @@
 import pygame, sys
 from jugador     import movimiento_jugador, disparar_balas, crear_balas, generar_animaciones
-from enemigos   import spawn_zombie, mover_zombies, detectar_colisiones, verificar_choque_con_jugador
+from enemigos   import spawn_zombie, mover_zombies, detectar_colisiones, verificar_choque_con_jugador, remover_zombies_muertos
 from ranking    import agregar_puntuacion
 from utils      import pedir_nombre_jugador
 from config import *
 from renderer import dibujar_fondo, dibujar_hud, dibujar_enemigos
+from ranking import mostrar_ranking
+from audio import reproducir_musica, cargar_sonido, reproducir_sonido
 
 MODE_QUIT = "quit"
 MODE_MENU = "menu"
@@ -52,7 +54,7 @@ def procesar_eventos():
         if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
             return MODE_MENU
 
-def actualizar_juego(estado, assets):
+def actualizar_juego(estado, assets, sonido):
     """
     Actualiza una iteración de juego:
       1. Genera y mueve enemigos.
@@ -70,6 +72,8 @@ def actualizar_juego(estado, assets):
         estado["enemigos"],
         assets["zombie_img"]
     )
+
+    # Mover zombies
     mover_zombies(estado["enemigos"])
 
     # Si los zombies que escapan = restar vidas
@@ -82,8 +86,13 @@ def actualizar_juego(estado, assets):
     estado["puntuacion"] = detectar_colisiones(
         balas = estado["balas"],
         puntuacion = estado["puntuacion"],
-        lista_enemigos = estado["enemigos"]
+        lista_enemigos = estado["enemigos"],
+        zombie_muerto_img=assets["zombie_muerto"],
+        tiempo_ahora = tiempo_actual,
+        sonido_hit = sonido
     )
+
+    remover_zombies_muertos(estado["enemigos"], tiempo_actual)
 
     # Colisiones zombie-jugador = restar vidas
     player_rect = pygame.Rect(
@@ -94,12 +103,14 @@ def actualizar_juego(estado, assets):
     estado["vidas"] = verificar_choque_con_jugador(
         player_rect,
         estado["vidas"],
-        lista_enemigos = estado["enemigos"]
+        lista_enemigos = estado["enemigos"],
+        sonido_hurt_gaucho = sonido
     )
 
     # Si se queda sin vidas, marca Game Over y sale
     if estado["vidas"] <= 0:
         estado["flags"]["game_over"] = True
+        reproducir_sonido(sonido, "game_over")
         return
 
     # Movimiento del jugador (W/S)
@@ -117,7 +128,9 @@ def actualizar_juego(estado, assets):
         cooldown         = COOLDOWN_DISPARO,
         jugador_x        = estado["jugador"]["x"],
         jugador_y        = estado["jugador"]["y"],
-        jugador_size     = GAUCHO_SIZE
+        jugador_size     = GAUCHO_SIZE,
+        ancho_pantalla   = ANCHO,
+        sonido_disparo   = sonido
     )
     estado["tiempos"]["ultimo_disparo"] = ultimo_tiro
     estado["flags"]["disparar"]         = disparar_flag
@@ -143,8 +156,7 @@ def renderizar_juego(pantalla, estado, assets):
     pos_x                = estado["jugador"]["x"],
     pos_y                = estado["jugador"]["y"],
     disparo_playing      = estado["flags"]["disparo_playing"],
-    disparo_start_time   = estado["tiempos"]["tiempo_inicio_disparo"],
-    sonido_disparo       = assets["sonido_disparo"] # sonido del diparo en la animación, ya que probé ejecutar el sonido despues de llamar a la funcion disparar_balas y se ejecutaba antes de que se dibuje el disparo, osea mucho delay
+    disparo_start_time   = estado["tiempos"]["tiempo_inicio_disparo"]
     )
     estado["flags"]["disparo_playing"]      = dp_playing
     estado["tiempos"]["tiempo_inicio_disparo"] = dp_start
@@ -170,16 +182,17 @@ def accionar_game_over(pantalla, estado):
     # pedir nombre y guardar score
     name = pedir_nombre_jugador(pantalla)
     agregar_puntuacion(name, estado["puntuacion"])
+    mostrar_ranking(pantalla)
 
 def iniciar_juego(assets):
     pantalla = assets["pantalla"]
     clock = pygame.time.Clock()
-    estado = crear_estado_inicial()      
+    estado = crear_estado_inicial()     
+    sonido = cargar_sonido()
 
-    # Musica de fondo
-    pygame.mixer.music.load(assets["musica_juego"])
-    pygame.mixer.music.set_volume(0.1)     # volumen (0.0 a 1.0)
-    pygame.mixer.music.play(-1)            # -1 = bucle infinito 
+
+    # Arranca la música de gameplay
+    reproducir_musica(RUTA_MUSICA_JUEGO, volume=VOLUMEN_MUSIC_JUEGO["volumen"], fade_ms=VOLUMEN_MUSIC_JUEGO["fade_ms"])  # Reproduce música del menú 
     
     modo = None
 
@@ -192,7 +205,7 @@ def iniciar_juego(assets):
             return
 
         # logica del juego
-        actualizar_juego(estado, assets)
+        actualizar_juego(estado, assets, sonido)
         if estado["flags"]["game_over"]: 
             pygame.mixer.music.fadeout(1000)
             accionar_game_over(pantalla, estado)
@@ -201,5 +214,7 @@ def iniciar_juego(assets):
         renderizar_juego(pantalla, estado, assets)
         clock.tick(60)
 
-    if pygame.mixer.music.get_busy():
-        pygame.mixer.music.stop()
+# detiene la musica del gameplay para reproducir la del menu
+#detener_musica(VOLUMEN_MUSIC_JUEGO["fade_ms"])
+
+

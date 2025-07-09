@@ -66,5 +66,53 @@
   {
     "nombre": "lep",
     "puntaje": 2
+  },
+  {
+    "nombre": "\u001bwdf",
+    "puntaje": 3
+  },
+  {
+    "nombre": "\u001bdef",
+    "puntaje": 1
+  },
+  {
+    "nombre": "tincho_test",
+    "puntaje": 3
+  },
+  {
+    "nombre": "prueba1",
+    "puntaje": 17
+  },
+  {
+    "nombre": "asdasd",
+    "puntaje": 4
+  },
+  {
+    "nombre": "carlos",
+    "puntaje": 1
+  },
+  {
+    "nombre": "sasd",
+    "puntaje": 2
+  },
+  {
+    "nombre": "peper",
+    "puntaje": 6
+  },
+  {
+    "nombre": "asdasd",
+    "puntaje": 4
+  },
+  {
+    "nombre": "asdasd",
+    "puntaje": 1
+  },
+  {
+    "nombre": "asdasd",
+    "puntaje": 0
+  },
+  {
+    "nombre": "asdasd",
+    "puntaje": 16
   }
 ]

@@ -1,91 +1,131 @@
 import pygame
-import sys
-from config import ANCHO, ALTO, fuente_grande, BLANCO, GRIS, COLOR_HOVER, SONIDO_CLICK
+import audio
+from assets import cargar_assets
+from renderer import dibujar_fondo
+from config import *
 
-pantalla = pygame.display.set_mode((ANCHO, ALTO))
-clock = pygame.time.Clock()
-pygame.mixer.init()                         # Inicializa el mixer de sonido
-#click_sound = pygame.mixer.Sound(SONIDO_CLICK)  # efecto click, a confirmar si se quiere usar.
+# Creamos reloj local para controlar FPS
+eclock = pygame.time.Clock()
 
-def crear_botones():
+
+def crear_botones(musica_pausada: bool) -> list[dict]:
     """
-    Genera una lista de tuplas con la información de cada botón:
-    (texto, superficie_render, rectángulo, color_normal, color_hover)
+    Genera la lista de diccionarios con información de cada botón:
+    - clave: acción en minúsculas
+    - normal, hover: superficies
+    - rect: posición
+    Incluye Pausar/Reanudar Música según el estado.
     """
-    labels = [("Jugar", 200), ("Ranking", 270), ("Créditos", 340), ("Salir", 410)]
+    etiquetas = [
+        ("Jugar", 200),
+        ("Ranking", 270),
+        ("Créditos", 340),
+        ("Pausar Música" if not musica_pausada else "Reanudar Música", 410),
+        ("Salir", 480)
+    ]
     botones = []
-    for texto, y in labels:
-        # Se renderizan las dos versiones del texto: normal y hover, para cambiar la apariencia de cada boton. Aca debemos definir la paleta de colores
-        surf_normal = fuente_grande.render(texto, True, BLANCO)
-        surf_hover  = fuente_grande.render(texto, True, COLOR_HOVER)
-        rect = surf_normal.get_rect(center=(ANCHO // 2, y))
-        # Guarda todo en la lista
+    for texto, y in etiquetas:
+        surf_norm = FUENTE_GRANDE.render(texto, True, BLANCO)
+        surf_hover = FUENTE_GRANDE.render(texto, True, COLOR_HOVER)
+        rect = surf_norm.get_rect(center=(ANCHO // 2, y))
         botones.append({
-            "texto": texto.lower(),     # clave de acción
-            "normal": surf_normal,      # superficie Pygame normal
-            "hover":  surf_hover,       # superficie Pygame cuando está encima
-            "rect":   rect              # posición y tamaño
+            "clave": texto.lower(),
+            "normal": surf_norm,
+            "hover": surf_hover,
+            "rect": rect
         })
     return botones
 
-def dibujar_botones(botones):
-    """
-    Dibuja cada botón en pantalla. Si el mouse está sobre él,
-    usamos la superficie 'hover', sino la 'normal'.
-    """
-    mouse_pos = pygame.mouse.get_pos()    # posición actual del cursor
-    for btn in botones:
-        if btn["rect"].collidepoint(mouse_pos):
-            pantalla.blit(btn["hover"], btn["rect"])
-        else:
-            pantalla.blit(btn["normal"], btn["rect"])
 
-def manejar_eventos(botones):
+def dibujar_botones(pantalla: pygame.Surface, botones: list[dict]) -> None:
+    """
+    Dibuja cada botón en pantalla, cambiando a hover si el cursor está encima.
+    """
+    pos_mouse = pygame.mouse.get_pos()
+    for btn in botones:
+        surf = btn["hover"] if btn["rect"].collidepoint(pos_mouse) else btn["normal"]
+        pantalla.blit(surf, btn["rect"])
+
+
+def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: bool) -> tuple[ str|None, bool ]:
     """
     Procesa eventos del menú:
-    - Si se hace click en un botón, devuelve su 'texto'. 
-    - Teclas ARRIBA/ABAJO para navegar y ENTER para confirmar.
-    - Devuelve None si no se seleccionó nada aún.
+      - Clic en botón: retorna (clave, nuevo_estado_musica)
+      - Tecla ESC o ventana cerrar: retorna ("salir", musica_pausada)
+      - Si se clickea Pausar/Reanudar Música: alterna estado y retorna (None, nuevo_estado)
+      - ENTER sobre botón: equivalente a clic
     """
-    # Índice del botón seleccionado: se calcula cuál está en hover
     seleccion = None
-    mouse_pos = pygame.mouse.get_pos()
+    pos_mouse = pygame.mouse.get_pos()
     for i, btn in enumerate(botones):
-        if btn["rect"].collidepoint(mouse_pos):
+        if btn["rect"].collidepoint(pos_mouse):
             seleccion = i
             break
 
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            return "salir"
-        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            # click izquierdo
-            if seleccion is not None:
-                #click_sound.play()   # sonido de click a definir si usaremos sonidos.
-                return botones[seleccion]["texto"]
+            return "salir", musica_pausada
         if evento.type == pygame.KEYDOWN:
-            if evento.key == pygame.K_UP and seleccion is not None:
-                seleccion = max(0, seleccion - 1)
-            if evento.key == pygame.K_DOWN and seleccion is not None:
-                seleccion = min(len(botones) - 1, seleccion + 1)
+            if evento.key == pygame.K_ESCAPE:
+                return "salir", musica_pausada
             if evento.key == pygame.K_RETURN and seleccion is not None:
-                #click_sound.play()
-                return botones[seleccion]["texto"]
-    return None
+                return botones[seleccion]["clave"], musica_pausada
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1 and seleccion is not None:
+            audio.reproducir_sonido(sonidos_menu, "click")
+            clave = botones[seleccion]["clave"]
+            if clave in ("pausar música", "reanudar música"):
+                # Alternar música de fondo
+                if not musica_pausada:
+                    audio.detener_musica(VOLUMEN_MUSIC_MENU["fade_ms"])
+                else:
+                    audio.reproducir_musica(
+                        RUTA_MUSICA_MENU,
+                        loops=-1,
+                        volume=VOLUMEN_MUSIC_MENU["volumen"],
+                        fade_ms=VOLUMEN_MUSIC_MENU["fade_ms"]
+                    )
+                musica_pausada = not musica_pausada
+                return None, musica_pausada
+            return clave, musica_pausada
+    return None, musica_pausada
 
-def mostrar_menu():
+
+def mostrar_menu() -> str:
     """
-    Ejecuta el bucle principal del menú. Devuelve la acción seleccionada.
+    Bucle principal del menú:
+      1. Carga assets y sonidos
+      2. Itera: draw fondo, draw título, draw botones, manejar eventos
+      3. Retorna la acción seleccionada
     """
-    botones = crear_botones()
+    # 1) Inicialización local
+    datos = cargar_assets()
+    pantalla = datos["pantalla"]
+    fondo = datos["fondo"]
+    ancho_fondo = datos["ancho_fondo"]
+    alto_fondo = datos["altura_fondo"]
+    sonidos_menu = audio.cargar_sonido()
+    musica_pausada = False
 
-    while True:
-        pantalla.fill(GRIS)        # color de fondo
-        dibujar_botones(botones)   # visualizar todos
+    ejecucion = True
 
-        accion = manejar_eventos(botones)
+    while ejecucion:
+        # Dibujo de fondo tileado
+        dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo)
+
+        # Título centrado
+        titulo_surf = FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, BLANCO)
+        titulo_rect = titulo_surf.get_rect(center=(ANCHO // 2, 100))
+        pantalla.blit(titulo_surf, titulo_rect)
+
+        # Botones y dibujo
+        botones = crear_botones(musica_pausada)
+        dibujar_botones(pantalla, botones)
+
+        # Manejo de eventos
+        accion, musica_pausada = manejar_eventos(botones, sonidos_menu, musica_pausada)
         if accion:
-            return accion         # "jugar", "ranking", "salir"
+            return accion
 
-        pygame.display.flip()      # actualiza pantalla completa
-        clock.tick(60)             # limitacion a 60 fps
+        # Refresh
+        pygame.display.flip()
+        eclock.tick(60)

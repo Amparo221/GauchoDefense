@@ -19,5 +19,9 @@ def dibujar_enemigos(pantalla, lista_enemigos):
     Itera sobre enemies_list y blitea cada imagen en su rect.
     """
     for e in lista_enemigos:
-        # asumimos que e["img"] es un objeto con .render(screen, (x,y))
-        e["img"].render(pantalla, (e["rect"].x, e["rect"].y))
+        if hasattr(e["img"], "render"):
+            # Es un GIF de gif_pygame
+            e["img"].render(pantalla, (e["rect"].x, e["rect"].y))
+        else:
+            # Es una Surface estática
+            pantalla.blit(e["img"], (e["rect"].x, e["rect"].y))
