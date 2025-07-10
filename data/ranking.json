@@ -4,6 +4,10 @@
     "puntaje": 21
   },
   {
+    "nombre": " amy",
+    "puntaje": 13
+  },
+  {
     "nombre": "dd",
     "puntaje": 12
   },
@@ -14,9 +18,5 @@
   {
     "nombre": "ddd",
     "puntaje": 9
-  },
-  {
-    "nombre": "pepe",
-    "puntaje": 7
   }
 ]

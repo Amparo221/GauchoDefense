@@ -100,8 +100,8 @@ def mostrar_menu(assets, sonido) -> str:
     datos = assets
     pantalla = datos["pantalla"]
     fondo = datos["fondo_menu"]
-    ancho_fondo = datos["ancho_fondo"]
-    alto_fondo = datos["altura_fondo"]
+    ancho_fondo = datos["ancho_fondo_menu"]
+    alto_fondo = datos["alto_fondo_menu"]
     sonidos_menu = sonido
     musica_pausada = False
 
