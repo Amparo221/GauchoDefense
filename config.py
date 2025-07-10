@@ -10,14 +10,17 @@ GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
 
 # Rutas a assets
-RUTA_FONDO_JUEGO   = "assets/images/fondo_5.png"
-RUTA_FONDO_MENU    = "assets/images/fondo_menu.png"
-RUTA_GAUCHO        = "assets/images/gaucho.png"
-RUTA_ZOMBIE_1      = "assets/images/sprite_zombie.gif"
-RUTA_CAMINAR       = "assets/images/caminar.gif"
-RUTA_DISPARO       = "assets/images/disparo.gif"
-RUTA_FUENTE        = "assets/fonts/Jersey10-Regular.ttf"
-RUTA_ZOMBIE_MUERTO = "assets/images/zombie_muerto.png"
+RUTA_FONDO_JUEGO         = "assets/images/fondo_5.png"
+RUTA_FONDO_JUEGO_NOCHE   = "assets/images/fondo_7_noche.png"
+RUTA_FONDO_MENU          = "assets/images/fondo_menu.png"
+RUTA_GAUCHO              = "assets/images/gaucho.png"
+RUTA_ZOMBIE_1            = "assets/images/sprite_zombie.gif"
+RUTA_ZOMBIE_FUERTE       = "assets/images/zombie_fuerte_0.gif"
+RUTA_ZOMBIE_HERIDO       = "assets/images/zombie_herido_0.gif"
+RUTA_CAMINAR             = "assets/images/caminar.gif"
+RUTA_DISPARO             = "assets/images/disparo.gif"
+RUTA_FUENTE              = "assets/fonts/Jersey10-Regular.ttf"
+RUTA_ZOMBIE_MUERTO       = "assets/images/zombie_muerto.png"
 
 # Fuentes
 pygame.font.init()
@@ -60,7 +63,7 @@ FONDO_SIZE = (ANCHO, ALTO)
 
 # Gameplay
 COOLDOWN_DISPARO = 500   # ms mínimo entre disparos
-ZOMBIE_SPEED = 4
+ZOMBIE_SPEED = 2
 GAUCHO_SPEED = 5
 BACKGROUND_SPEED = 2
 

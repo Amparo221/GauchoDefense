@@ -20,10 +20,9 @@ def actualizar_juego(estado, assets, sonido):
         estado["tiempos"]["ultimo_spawn"],
         ANCHO,
         estado["enemigos"],
-        assets["zombie_img"]
+        assets
     )
 
-    # Mover zombies
     mover_zombies(estado["enemigos"])
 
     # Si los zombies que escapan = restar vidas

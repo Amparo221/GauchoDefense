@@ -13,7 +13,6 @@ def iniciar_juego(assets):
     sonido = cargar_sonido()
 
 
-    # Arranca la música de gameplay
     reproducir_musica(RUTA_MUSICA_JUEGO, volume=VOLUMEN_MUSIC_JUEGO["volumen"], fade_ms=VOLUMEN_MUSIC_JUEGO["fade_ms"])  # Reproduce música del menú 
     
     modo = None

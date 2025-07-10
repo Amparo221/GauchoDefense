@@ -4,8 +4,15 @@ from entities.jugador import crear_balas, generar_animaciones
 
 def renderizar_juego(pantalla, estado, assets):
     # crear_fondo, crear_balas, animaciones, dibujar_zombies, HUD…
-    # fondo infinito
-    dibujar_fondo(pantalla, assets["fondo"], assets["ancho_fondo"], assets["altura_fondo"], estado)
+    if estado["puntuacion"] // 5 > estado["ultimo_cambio_fondo"]:
+        fondos                        = ["fondo", "fondo_noche"]
+        actual                        = fondos.index(estado["fondo_actual"])
+        nuevo                         = (actual + 1) % len(fondos)
+        estado["fondo_actual"]        = fondos[nuevo]
+        estado["ultimo_cambio_fondo"] = estado["puntuacion"] // 5
+    
+    fondo_usado = assets[estado["fondo_actual"]]
+    dibujar_fondo(pantalla, fondo_usado, assets["ancho_fondo"], assets["altura_fondo"], estado)
 
     crear_balas(pantalla, estado.get("balas", []), assets["bala_img"])
 

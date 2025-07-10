@@ -10,13 +10,13 @@ from config import *
 
 def main():
     pygame.init()
-    inicializar_audio()  # Inicializa el mixer de Pygame
+    inicializar_audio() 
     sonido = cargar_sonido()
 
     assets = cargar_assets()
     pantalla = assets["pantalla"]
 
-    cambiar_musica("menu")  # Arranca música del menú
+    cambiar_musica("menu")  
 
     ejecucion = True
     while ejecucion:
@@ -25,9 +25,7 @@ def main():
         if accion == "jugar":
             play_click(sonido)
             cambiar_musica("juego")
-            # Arranca el juego
             iniciar_juego(assets)
-            # Reproduce música del menú
             cambiar_musica("menu")
 
         elif accion == "ranking":
@@ -47,7 +45,6 @@ def main():
             sys.exit()
 
         else:
-            # Si ocurre algo sin manejar volver al menú por default
             print(f"Opción inválida ({accion}), regresando al menú...")
             pygame.time.delay(500)
 

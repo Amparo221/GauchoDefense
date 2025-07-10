@@ -37,7 +37,9 @@ def crear_estado_inicial():
         },
         "puntuacion":  0,
         "vidas":  3,
-        "fondo_x": 0
+        "fondo_x": 0,
+        "fondo_actual": "fondo",
+        "ultimo_cambio_fondo": 0
     }
 
 def accionar_game_over(pantalla, estado):

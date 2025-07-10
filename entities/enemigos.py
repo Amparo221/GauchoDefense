@@ -4,17 +4,32 @@ from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, R
 from game.audio import reproducir_sonido
 
 
-def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, zombie_img):
+def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, assets):
     if tiempo_ahora - ultimo_spawn >= SPAWN_TIEMPO:
         y = random.choice(SPAWN_DISPONIBLES)
 
         zombie_rect = pygame.Rect(ancho_screen, y, *ZOMBIE_SIZE)
-        lista_enemigos.append({
-            "rect": zombie_rect, 
-            "img": zombie_img,
-            "vivo": True
-        })
 
+        # Por medio de random se puede manejar la probabilidad de aparicion de un enemigo fuerte, en este caso 30%
+        es_fuerte = random.random() < 0.3 
+
+        if es_fuerte:
+            enemigo = {
+                "rect": zombie_rect,
+                "img": assets["zombie_fuerte"],
+                "img_herido": assets["zombie_herido"],
+                "vivo": True,
+                "vida": 2
+            }
+        else:
+            enemigo = {
+                "rect": zombie_rect,
+                "img": assets["zombie_img"],
+                "vivo": True,
+                "vida": 1
+            }
+
+        lista_enemigos.append(enemigo)
         return tiempo_ahora
     return ultimo_spawn
 
@@ -27,14 +42,19 @@ def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, ti
         bala_rect = pygame.Rect(bala[0], bala[1], 15, 5)
         for z in lista_enemigos[:]:
             if z["vivo"] and bala_rect.colliderect(z["rect"]):
-                z["vivo"] = False
-                z["img"] = zombie_muerto_img
-                z["tiempo_muerte"] = tiempo_ahora  # guardo el momento que murió
+                z["vida"] -= 1
+
+                if z["vida"] == 1 and "img_herido" in z:
+                    z["img"] = z["img_herido"]
+
+                if z["vida"] <= 0:
+                    z["vivo"] = False
+                    z["img"] = zombie_muerto_img
+                    z["tiempo_muerte"] = tiempo_ahora
+                    puntuacion += 1
 
                 reproducir_sonido(sonido_hit, "hit_zombie")
-
                 balas.remove(bala)
-                puntuacion += 1
                 break
     return puntuacion
 
