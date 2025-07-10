@@ -36,7 +36,8 @@ def crear_estado_inicial():
             "disparo_playing": 0
         },
         "puntuacion":  0,
-        "vidas":  3
+        "vidas":  3,
+        "fondo_x": 0
     }
 
 def accionar_game_over(pantalla, estado):

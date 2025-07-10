@@ -1,7 +1,7 @@
 import pygame
 from game.audio import reproducir_musica, cargar_sonido, detener_musica, reproducir_sonido
 from assets.assets import cargar_assets
-from ui.renderer import dibujar_fondo
+from ui.renderer import dibujar_fondo_estatico
 from config import *
 
 # Creamos reloj local para controlar FPS
@@ -109,7 +109,7 @@ def mostrar_menu(assets, sonido) -> str:
 
     while ejecucion:
         # Dibujo de fondo tileado
-        dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo)
+        dibujar_fondo_estatico(pantalla, fondo, ancho_fondo, alto_fondo)
 
         # Título centrado
         titulo_surf = FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, BLANCO)

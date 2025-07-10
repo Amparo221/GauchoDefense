@@ -1,13 +1,19 @@
-from config import FONT_HUD, BLANCO
+from config import FONT_HUD, BLANCO, BACKGROUND_SPEED
 
-
-def dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo):
-    """
-    Tilea el surface `fondo` por todo el `screen`.
-    """
+def dibujar_fondo_estatico(pantalla, fondo, ancho_fondo, alto_fondo):
     for y in range(0, pantalla.get_height(), alto_fondo):
         for x in range(0, pantalla.get_width(), ancho_fondo):
             pantalla.blit(fondo, (x, y))
+
+def dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo, estado):    
+    estado["fondo_x"] -= BACKGROUND_SPEED
+
+    if estado["fondo_x"] <= -ancho_fondo:
+        estado["fondo_x"] = 0
+
+    for y in range(0, pantalla.get_height(), alto_fondo):
+        for x in range(0, pantalla.get_width() + ancho_fondo, ancho_fondo):
+            pantalla.blit(fondo, (x + estado["fondo_x"], y))
 
 # informacion en pantalla: puntuación y vidas
 def dibujar_hud(pantalla, puntaje, vidas):

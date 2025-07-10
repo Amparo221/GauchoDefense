@@ -10,7 +10,7 @@ GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
 
 # Rutas a assets
-RUTA_FONDO_JUEGO   = "assets/images/fondo.png"
+RUTA_FONDO_JUEGO   = "assets/images/fondo_5.png"
 RUTA_FONDO_MENU    = "assets/images/fondo_menu.png"
 RUTA_GAUCHO        = "assets/images/gaucho.png"
 RUTA_ZOMBIE_1      = "assets/images/sprite_zombie.gif"
@@ -62,6 +62,7 @@ FONDO_SIZE = (ANCHO, ALTO)
 COOLDOWN_DISPARO = 500   # ms mínimo entre disparos
 ZOMBIE_SPEED = 4
 GAUCHO_SPEED = 5
+BACKGROUND_SPEED = 2
 
 # Archivos de datos
 RANKING_PATH = "data/ranking.json"

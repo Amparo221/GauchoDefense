@@ -5,7 +5,7 @@ from entities.jugador import crear_balas, generar_animaciones
 def renderizar_juego(pantalla, estado, assets):
     # crear_fondo, crear_balas, animaciones, dibujar_zombies, HUD…
     # fondo infinito
-    dibujar_fondo(pantalla, assets["fondo"], assets["ancho_fondo"], assets["altura_fondo"])
+    dibujar_fondo(pantalla, assets["fondo"], assets["ancho_fondo"], assets["altura_fondo"], estado)
 
     crear_balas(pantalla, estado.get("balas", []), assets["bala_img"])
 
