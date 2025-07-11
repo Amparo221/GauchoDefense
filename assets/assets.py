@@ -8,8 +8,13 @@ def cargar_assets():
     # Ventana
     pygame.display.set_caption("Gaucho Defense")  # Título de la ventana
 
+<<<<<<< HEAD
     # Fondo juego
     fondo_juego = pygame.image.load(config.RUTA_FONDO_JUEGO).convert_alpha()
+=======
+    # Fondo
+    fondo_juego = pygame.image.load(RUTA_FONDO_JUEGO).convert_alpha()
+>>>>>>> origin/am-6-introduccion
     ancho_fondo_juego, alto_fondo_juego = fondo_juego.get_size()
 
     # Fondo del menú
@@ -44,6 +49,7 @@ def cargar_assets():
 
 
     return {
+<<<<<<< HEAD
         "imagenes": {
             "fondo_juego": fondo_juego,
             "fondo_menu": fondo_menu,
@@ -67,4 +73,19 @@ def cargar_assets():
             "zombie_img": zombie_img,
             "zombie_muerto": zombie_muerto
         }
+=======
+        "pantalla": pantalla,
+        "fondo_juego": fondo_juego,
+        "fondo_menu": fondo_menu,
+        "ancho_fondo_juego": ancho_fondo_juego,
+        "alto_fondo_juego": alto_fondo_juego,
+        "ancho_fondo_menu": ANCHO,
+        "alto_fondo_menu": ALTO,
+        "gaucho": gaucho,
+        "caminar": caminar,
+        "disparo": disparo,
+        "bala_img": bala_img,
+        "zombie_img": zombie_img,
+        "zombie_muerto": zombie_muerto
+>>>>>>> origin/am-6-introduccion
     }

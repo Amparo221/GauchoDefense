@@ -21,7 +21,7 @@ FUENTE_TAM_HUD = 36
 FUENTE_TAM_JUGADOR = 48
 
 # Rutas a assets
-RUTA_FONDO_JUEGO   = "assets/images/fondo.png"
+RUTA_FONDO_JUEGO   = "assets/images/fondo_juego.png"
 RUTA_FONDO_MENU    = "assets/images/fondo_menu.png"
 RUTA_GAUCHO        = "assets/images/gaucho.png"
 RUTA_ZOMBIE_1      = "assets/images/sprite_zombie.gif"
