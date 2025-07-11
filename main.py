@@ -25,31 +25,33 @@ def main() -> None:
     pygame.init()
     inicializar_audio() 
     sonido = cargar_sonido()
+    pantalla = pygame.display.set_mode((config.ANCHO, config.ALTO))
 
     assets = cargar_assets()
-    pantalla = assets["pantalla"]
 
     cambiar_musica("menu")  
 
     ejecucion = True
     while ejecucion:
-        accion = mostrar_menu(assets, sonido) 
+        accion = mostrar_menu(pantalla, assets, sonido) 
 
         if accion == config.MODE_JUGAR:
             play_click(sonido)
-            mostrar_introduccion(pantalla)
+            mostrar_introduccion(pantalla, assets)
             cambiar_musica("juego")
-            iniciar_juego(assets)
-            cambiar_musica("menu")
+            # Arranca el juego
+            iniciar_juego(assets, sonido, pantalla)
+            # Reproduce música del menú
+            cambiar_musica(config.MODE_MENU)
 
         elif accion == config.MODE_RANKING:
             play_click(sonido)
-            mostrar_ranking(pantalla)
+            mostrar_ranking(pantalla, assets)
             pygame.time.delay(250)
 
         elif accion == config.MODE_CREDITOS:
             play_click(sonido)
-            mostrar_creditos(pantalla)
+            mostrar_creditos(pantalla, assets)
             pygame.time.delay(250)
 
         elif accion == config.MODE_SALIR:

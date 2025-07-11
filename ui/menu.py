@@ -1,13 +1,12 @@
 import pygame
-from game.audio import reproducir_musica, cargar_sonido, detener_musica, reproducir_sonido
-from assets.assets import cargar_assets
-from ui.renderer import dibujar_fondo_estatico
+from game.audio import reproducir_musica, detener_musica, reproducir_sonido
+from ui.renderer import dibujar_fondo_estatico, dibujar_titulo
 import config
 
 # Creamos reloj local para controlar FPS
 eclock = pygame.time.Clock()
 
-def crear_botones(musica_pausada: bool) -> list[dict]:
+def crear_botones(fuente_grande, musica_pausada: bool) -> list[dict]:
     """
     Declara una lista de tuplas con todas las variables de botones y su altura.
     - Incluye Pausar/Reanudar Música según el estado.
@@ -32,8 +31,8 @@ def crear_botones(musica_pausada: bool) -> list[dict]:
     ]
     botones = []
     for texto, y in etiquetas:
-        surf_norm = config.FUENTE_GRANDE.render(texto, True, config.BLANCO)
-        surf_hover = config.FUENTE_GRANDE.render(texto, True, config.COLOR_HOVER)
+        surf_norm = fuente_grande.render(texto, True, config.BLANCO)
+        surf_hover = fuente_grande.render(texto, True, config.COLOR_HOVER)
         rect = surf_norm.get_rect(center=(config.ANCHO // 2, y))
         botones.append({
             "clave": texto.lower(),
@@ -112,11 +111,12 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
     return None, musica_pausada
 
 
-def mostrar_menu(assets: dict, sonido: dict) -> str:
+def mostrar_menu(pantalla, assets, sonido: list[dict]) -> str:
     """
-    Bucle de carga del menú:
-      1. Carga assets y sonidos
-      2. Itera: dibuja fondo menu, dibuja título, dibuja botones, manejar eventos
+    Bucle principal del menú:
+      1. Carga assets y sonidos necesarios
+      2. Dibuja fondo tileado, título y botones
+      3. Maneja eventos y retorna la acción seleccionada
       3. Retorna la acción seleccionada
 
     Args:
@@ -126,28 +126,24 @@ def mostrar_menu(assets: dict, sonido: dict) -> str:
     Returns:
         str: accion seleccionada
     """
-
-    datos = assets
-    pantalla = datos["pantalla"]
-    fondo = datos["fondo_menu"]
-    ancho_fondo = datos["ancho_fondo"]
-    alto_fondo = datos["altura_fondo"]
-    sonidos_menu = sonido
+    # 1) Inicialización local
     musica_pausada = False
 
     ejecucion = True
 
     while ejecucion:
-        dibujar_fondo_estatico(pantalla, fondo, ancho_fondo, alto_fondo)
+        # Dibujo de fondo tileado
+        dibujar_fondo_estatico(pantalla, assets["imagenes"]["fondo_menu"], assets["imagenes"]["ancho_fondo_menu"], assets["imagenes"]["alto_fondo_menu"])
 
-        titulo_surf = config.FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, config.BLANCO)
-        titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 100))
-        pantalla.blit(titulo_surf, titulo_rect)
+        # Título centrado
+        dibujar_titulo(pantalla, assets["fuentes"]["fuente_titulo_principal"])
 
-        botones = crear_botones(musica_pausada)
+        # Botones y dibujo
+        botones = crear_botones(assets["fuentes"]["fuente_grande"], musica_pausada)
         dibujar_botones(pantalla, botones)
 
-        accion, musica_pausada = manejar_eventos(botones, sonidos_menu, musica_pausada)
+        # Manejo de eventos
+        accion, musica_pausada = manejar_eventos(botones, sonido, musica_pausada)
         if accion:
             return accion
 

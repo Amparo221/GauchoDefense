@@ -1,19 +1,16 @@
 import pygame
 import sys
 from pygame.locals import *
-from config import ANCHO, ALTO, NEGRO, BLANCO, FUENTE_MEDIANA
+from config import ANCHO, ALTO, NEGRO, BLANCO
 
-def mostrar_introduccion(pantalla: pygame.surface) -> None:
+def mostrar_introduccion(pantalla, assets):
     """
     Muestra la pantalla de introduccion con el texto proporcionado.
     Retorna cuando se presiona ESC o despues del tiempo de espera.
-
-    Args:
-        pantalla (pygame.surface): superficie de la pantalla del juego
     """
     texto = [
-        "Año 1825",
-        "Juan Moreira se encuentraba intentando descansar",
+        "Año 18XX",
+        "[nombre] se encuentraba intentando descansar",
         "de los efectos de la guerra, después de haber sido",
         "reclutado para luchar junto con Martín Miguel de Güemes,",
         "como muchos otros gauchos. Cuando de repente escucha",
@@ -24,13 +21,12 @@ def mostrar_introduccion(pantalla: pygame.surface) -> None:
         "de la muerte y quieren venganza."
     ]
 
-
     textos = []
     for i, linea in enumerate(texto):
-        texto = FUENTE_MEDIANA.render(linea, True, BLANCO)
+        texto = assets["fuentes"]["fuente_mediana"].render(linea, True, BLANCO)
         textos.append(texto)
 
-    skip_text = FUENTE_MEDIANA.render("Presiona ESC para saltar", True, BLANCO)
+    skip_text = assets["fuentes"]["fuente_mediana"].render("Presiona ESC para saltar", True, BLANCO)
 
     #calcular posiciones de Y para cada linea
     posiciones_y = [ALTO // 4 - 50]
@@ -39,7 +35,7 @@ def mostrar_introduccion(pantalla: pygame.surface) -> None:
 
 
     tiempo_inicio = pygame.time.get_ticks()
-    duracion = 5000
+    duracion = 10000
 
     en_intro = True
     while en_intro:
@@ -62,3 +58,4 @@ def mostrar_introduccion(pantalla: pygame.surface) -> None:
 
         pygame.display.flip()
         pygame.time.delay(30)
+

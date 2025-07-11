@@ -1,5 +1,9 @@
 import pygame
 
+"""Configuración del juego Gaucho Defense.
+Define constantes para la pantalla, colores, rutas de assets, fuentes, audio,
+tamaños, gameplay."""
+
 # Pantalla
 ANCHO, ALTO = 1000, 600
 
@@ -8,6 +12,13 @@ BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
+
+# Tamanio Fuentes
+FUENTE_TAM_GRANDE = 40
+FUENTE_TAM_MEDIANA = 30
+FUENTE_TAM_TITULO = 80
+FUENTE_TAM_HUD = 36
+FUENTE_TAM_JUGADOR = 48
 
 # Rutas a assets
 RUTA_FONDO_JUEGO         = "assets/images/fondo_5.png"
@@ -78,8 +89,5 @@ SPAWN_DISPONIBLES = [50, 150, 250, 350, 450] # cambiar por random
 # Menu
 MODE_QUIT = "quit"
 MODE_MENU = "menu"
-MODE_JUGAR = "jugar"
 MODE_RANKING = "ranking"
-MODE_CREDITOS = "créditos"
-MODE_SALIR = "salir"
 

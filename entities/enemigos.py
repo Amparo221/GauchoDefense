@@ -1,28 +1,14 @@
 import pygame
 import random
-from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, RUTA_ZOMBIE_MUERTO
+import config
 from game.audio import reproducir_sonido
 
 
-def spawn_zombie(tiempo_ahora: int, ultimo_spawn: int, ancho_screen: int, lista_enemigos: list, assets: dict) -> int:
-    """
-    Se maneja el spawneo de los enemigos, se generan los dos tipos de zombies y se stackean en diccionarios.
+def spawn_zombie(tiempo_ahora, ultimo_spawn, lista_enemigos, assets):
+    if tiempo_ahora - ultimo_spawn >= config.SPAWN_TIEMPO:
+        y = random.choice(config.SPAWN_DISPONIBLES)
 
-    Args: 
-        tiempo_ahora: int
-        ultimo_spawn: int
-        ancho_screen: int
-        lista_enemigos: list
-        assets: dict
-
-    Returns:
-        int
-
-    """
-    if tiempo_ahora - ultimo_spawn >= SPAWN_TIEMPO:
-        y = random.choice(SPAWN_DISPONIBLES)
-
-        zombie_rect = pygame.Rect(ancho_screen, y, *ZOMBIE_SIZE)
+        zombie_rect = pygame.Rect(config.ANCHO, y, *config.ZOMBIE_SIZE)
 
         # Por medio de random se puede manejar la probabilidad de aparicion de un enemigo fuerte, en este caso 30%
         es_fuerte = random.random() < 0.3 
@@ -30,15 +16,15 @@ def spawn_zombie(tiempo_ahora: int, ultimo_spawn: int, ancho_screen: int, lista_
         if es_fuerte:
             enemigo = {
                 "rect": zombie_rect,
-                "img": assets["zombie_fuerte"],
-                "img_herido": assets["zombie_herido"],
+                "img": assets["sprites"]["zombie_fuerte"],
+                "img_herido": assets["sprites"]["zombie_herido"],
                 "vivo": True,
                 "vida": 2
             }
         else:
             enemigo = {
                 "rect": zombie_rect,
-                "img": assets["zombie_img"],
+                "img": assets["sprites"]["zombie_img"],
                 "vivo": True,
                 "vida": 1
             }
@@ -54,7 +40,7 @@ def mover_zombies(lista_enemigos: list) -> None:
         lista_enemigos: list
     """
     for z in lista_enemigos:
-        z["rect"].x -= ZOMBIE_SPEED
+        z["rect"].x -= config.ZOMBIE_SPEED
 
 def detectar_colisiones(balas: list, puntuacion: int, lista_enemigos: list, zombie_muerto_img: pygame.surface, tiempo_ahora: int, sonido_hit: dict) -> int:
     """

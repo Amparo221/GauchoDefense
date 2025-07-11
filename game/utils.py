@@ -1,8 +1,8 @@
 import pygame, sys
-from config import *
+import config
 
 
-def pedir_nombre_jugador(pantalla: pygame.surface) -> str:
+def pedir_nombre_jugador(pantalla, fuente_jugador):
     """
     Muestra en pantalla un prompt para que el jugador escriba su nombre.
     Tiene un limite de caracteres, un parpadeo del cursor.
@@ -12,8 +12,9 @@ def pedir_nombre_jugador(pantalla: pygame.surface) -> str:
     cursor_visible = True
     tiempo_cursor = 0
 
-    prompt_surf = FONT_TITLE.render("Ingresa tu nombre:", True, BLANCO)
-    prompt_rect = prompt_surf.get_rect(center=(ANCHO//2, ALTO//2 - 50))
+    # Fuente y rectángulo de prompt
+    prompt_surf = fuente_jugador.render("Ingresa tu nombre:", True, config.BLANCO)
+    prompt_rect = prompt_surf.get_rect(center=(config.ANCHO//2, config.ALTO//2 - 50))
 
     entrando = True
     clock_input = pygame.time.Clock()
@@ -37,48 +38,56 @@ def pedir_nombre_jugador(pantalla: pygame.surface) -> str:
             tiempo_cursor = 0
             cursor_visible = not cursor_visible
 
-        pantalla.fill(NEGRO)
+        # Dibujado
+        pantalla.fill(config.NEGRO)
         pantalla.blit(prompt_surf, prompt_rect)
 
-        text_surf = FONT_TITLE.render(nombre, True, BLANCO)
-
-        text_rect = text_surf.get_rect(midtop=(ANCHO//2, ALTO//2))
+        # Renderizado del teclado
+        text_surf = fuente_jugador.render(nombre, True, config.BLANCO)
+        # Calculo del rect de texto para centrar horizontalmente
+        text_rect = text_surf.get_rect(midtop=(config.ANCHO//2, config.ALTO//2))
         pantalla.blit(text_surf, text_rect)
 
         if cursor_visible:
             cursor_x = text_rect.right + 5 
             cursor_y = text_rect.y 
             cursor_h = text_rect.height
-            pygame.draw.rect(pantalla, BLANCO, (cursor_x, cursor_y, 3, cursor_h))
+            pygame.draw.rect(pantalla, config.BLANCO, (cursor_x, cursor_y, 3, cursor_h))
 
         pygame.display.flip()
         clock_input.tick(60)
 
-def mostrar_creditos(pantalla: pygame.surface) -> None:
+def mostrar_creditos(pantalla, assets):
     """
     Muestra la pantalla de créditos con los nombres de los creadores.
     Espera a que se cierre la ventana o se pulse ESC para volver.
     """
     clock = pygame.time.Clock()
-    ejecutando = True
+
+    fuente_grande = assets["fuentes"]["fuente_grande"]
+    fuente_mediana = assets["fuentes"]["fuente_mediana"]
+
 
     nombres = ["Paula Ortega", "Amparo Moreno", "León Puddini"]
 
-    titulo_surf = FUENTE_GRANDE.render("Créditos", True, BLANCO)
-    titulo_rect = titulo_surf.get_rect(center=(ANCHO//2, 80))
+    # Pre-renderizo el título
+    titulo_surf = fuente_grande.render("Créditos", True, config.BLANCO)
+    titulo_rect = titulo_surf.get_rect(center=(config.ANCHO//2, 80))
 
     nombre_surfs = []
     separacion = 50
     y_inicial = 180
     
     for i, nombre in enumerate(nombres):
-        surf = FUENTE_MEDIANA.render(nombre, True, BLANCO)
-        rect = surf.get_rect(center=(ANCHO//2, y_inicial + i * separacion))
+        surf = fuente_mediana.render(nombre, True, config.BLANCO)
+        rect = surf.get_rect(center=(config.ANCHO//2, y_inicial + i * separacion))
         nombre_surfs.append((surf, rect))
 
-    volver_surf = FUENTE_MEDIANA.render("Presiona ESC para volver", True, BLANCO)
-    volver_rect = volver_surf.get_rect(center=(ANCHO//2, ALTO - 40))
+    # Texto para volver al menu principal
+    volver_surf = fuente_mediana.render("Presiona ESC para volver", True, config.BLANCO)
+    volver_rect = volver_surf.get_rect(center=(config.ANCHO//2, config.ALTO - 40))
 
+    ejecutando = True
     while ejecutando:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -87,7 +96,7 @@ def mostrar_creditos(pantalla: pygame.surface) -> None:
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
                 ejecutando = False
 
-        pantalla.fill(NEGRO)
+        pantalla.fill(config.NEGRO)
         pantalla.blit(titulo_surf, titulo_rect)
         for surf, rect in nombre_surfs:
             pantalla.blit(surf, rect)

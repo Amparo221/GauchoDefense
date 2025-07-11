@@ -1,6 +1,6 @@
-from config import *
 from game.utils import pedir_nombre_jugador
 from ui.ranking import agregar_puntuacion, mostrar_ranking
+from ui.renderer import dibujar_game_over
 
 def crear_estado_inicial() -> dict:
     """
@@ -66,27 +66,12 @@ def crear_estado_inicial() -> dict:
         "puntuacion":  0,
         "vidas":  3,
         "fondo_x": 0,
-        "fondo_actual": "fondo",
+        "fondo_actual": "fondo_juego",
         "ultimo_cambio_fondo": 0
     }
 
-def accionar_game_over(pantalla: pygame.surface, estado: dict) -> None:
-    """
-    Recibe pantalla y estado. 
-    Muestra y da formato en pantalla a Game Over.
-    Invoca pedir_nombre_jugador(), agregar_puntuacion(), mostrar_ranking()
-
-    Args:
-        pantalla (pygame.surface): superficie de la pantalla del juego.
-        estado (dict): diccionario con el estado del juego.
-    """    
-    pantalla.fill(NEGRO)
-    texto_partida_perdida = FONT_TITLE.render('Perdiste, Canejo', True, BLANCO)
-    pantalla.blit(texto_partida_perdida, texto_partida_perdida.get_rect(center=(ANCHO//2, ALTO//2 - 50)))
-    pygame.display.flip()
-    pygame.time.delay(3000)
-
-    # pedir nombre y guardar score
-    name = pedir_nombre_jugador(pantalla)
-    agregar_puntuacion(name, estado["puntuacion"])
-    mostrar_ranking(pantalla)
+def accionar_game_over(pantalla, estado, assets):
+    '''Muestra la pantalla de Game Over y guarda la puntuación del jugador.'''
+    dibujar_game_over(pantalla, assets["fuentes"]["fuente_grande"])
+    agregar_puntuacion(pedir_nombre_jugador(pantalla, assets["fuentes"]["fuente_jugador"]), estado["puntuacion"])
+    mostrar_ranking(pantalla, assets)

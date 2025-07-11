@@ -18,7 +18,7 @@ def get_puntaje(entry: dict) -> int:
     return entry["puntaje"]
 
 
-def cargar_puntuaciones() -> list:
+def cargar_puntuaciones():
     """
     Abre el archivo JSON de ranking en 'path', lo lee, convierte a dict Python
     y retorna el top-5 ordenado.
@@ -43,7 +43,7 @@ def cargar_puntuaciones() -> list:
     return obtener_mejores_puntuaciones(datos, top_n=5)
 
 
-def guardar_puntuaciones(puntuaciones: list) -> None:
+def guardar_puntuaciones(puntuaciones):
     """
     Escribe la lista 'puntuaciones' en formato JSON en 'path'.
     Chequea que el directorio exista, si es asi no hace nada.
@@ -93,7 +93,7 @@ def obtener_mejores_puntuaciones(puntuaciones: list, top_n: int = 5) -> list:
     return resultado
 
 
-def agregar_puntuacion(nombre: str, puntaje: int) -> bool:
+def agregar_puntuacion(nombre, puntaje):
     """
     Inserta un nuevo puntaje si hay < 5 o es >= al mínimo del top-5.
     Retorna True si se guardó, False en caso contrario.
@@ -106,7 +106,7 @@ def agregar_puntuacion(nombre: str, puntaje: int) -> bool:
     Returns:
         bool
     """
-    scores = cargar_puntuaciones(config.RANKING_PATH)
+    scores = cargar_puntuaciones()
 
     debe_insertar = False
     if len(scores) < 5:
@@ -120,13 +120,13 @@ def agregar_puntuacion(nombre: str, puntaje: int) -> bool:
         nueva_entrada = {"nombre": nombre, "puntaje": puntaje}
         scores.append(nueva_entrada)
         top5 = obtener_mejores_puntuaciones(scores, top_n=5)
-        guardar_puntuaciones(top5, config.RANKING_PATH)
+        guardar_puntuaciones(top5)
         return True
 
     return False
 
 
-def mostrar_ranking(screen: pygame.Surface) -> None:
+def mostrar_ranking(screen, assets):
     """
     Carga, muestra y da formato en pantalla el top-5 de puntuaciones.
     Espera ESC o cierre de ventana para volver.
@@ -152,7 +152,10 @@ def mostrar_ranking(screen: pygame.Surface) -> None:
 
         screen.fill(config.NEGRO)
 
-        titulo_surf = config.FUENTE_MEDIANA.render("Top 5 Gaucho Defense", True, config.BLANCO)
+        fuente_mediana = assets["fuentes"]["fuente_mediana"]
+
+        # Título
+        titulo_surf = fuente_mediana.render("Top 5 Gaucho Defense", True, config.BLANCO)
         titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 60))
         screen.blit(titulo_surf, titulo_rect)
 
@@ -162,12 +165,13 @@ def mostrar_ranking(screen: pygame.Surface) -> None:
         for i in range(len(top5)):
             entrada = top5[i]
             texto = str(i+1) + ". " + entrada["nombre"] + " — " + str(entrada["puntaje"])
-            surf = config.FUENTE_MEDIANA.render(texto, True, config.BLANCO)
+            surf = fuente_mediana.render(texto, True, config.BLANCO)
             rect = surf.get_rect(center=(config.ANCHO // 2, y_actual))
             screen.blit(surf, rect)
             y_actual += espacio
 
-        info_surf = config.FUENTE_MEDIANA.render("Presiona ESC para volver", True, config.BLANCO)
+        # Instrucción para volver
+        info_surf = fuente_mediana.render("Presiona ESC para volver", True, config.BLANCO)
         info_rect = info_surf.get_rect(center=(config.ANCHO // 2, config.ALTO - 40))
         screen.blit(info_surf, info_rect)
 
