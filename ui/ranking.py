@@ -118,8 +118,10 @@ def mostrar_ranking(screen, assets):
 
         screen.fill(config.NEGRO)
 
+        fuente_mediana = assets["fuentes"]["fuente_mediana"]
+
         # Título
-        titulo_surf = assets["fuentes"]["fuente_mediana"].render("Top 5 Gaucho Defense", True, config.BLANCO)
+        titulo_surf = fuente_mediana.render("Top 5 Gaucho Defense", True, config.BLANCO)
         titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 60))
         screen.blit(titulo_surf, titulo_rect)
 
@@ -130,13 +132,13 @@ def mostrar_ranking(screen, assets):
         for i in range(len(top5)):
             entrada = top5[i]
             texto = str(i+1) + ". " + entrada["nombre"] + " — " + str(entrada["puntaje"])
-            surf = assets["fuentes"]["fuente_mediana"].render(texto, True, config.BLANCO)
+            surf = fuente_mediana.render(texto, True, config.BLANCO)
             rect = surf.get_rect(center=(config.ANCHO // 2, y_actual))
             screen.blit(surf, rect)
             y_actual += espacio
 
         # Instrucción para volver
-        info_surf = assets["fuentes"]["fuente_mediana"].render("Presiona ESC para volver", True, config.BLANCO)
+        info_surf = fuente_mediana.render("Presiona ESC para volver", True, config.BLANCO)
         info_rect = info_surf.get_rect(center=(config.ANCHO // 2, config.ALTO - 40))
         screen.blit(info_surf, info_rect)
 

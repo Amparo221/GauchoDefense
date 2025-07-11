@@ -12,6 +12,11 @@ def cargar_assets():
     fondo_juego = pygame.image.load(config.RUTA_FONDO_JUEGO).convert_alpha()
     ancho_fondo_juego, alto_fondo_juego = fondo_juego.get_size()
 
+    # Fondo de noche
+    fondo_noche = pygame.image.load(config.RUTA_FONDO_JUEGO_NOCHE).convert_alpha()
+    fondo_noche = pygame.transform.scale(fondo_noche, config.FONDO_SIZE)
+    ancho_fondo_noche, altura_fondo_noche = fondo_noche.get_size()
+
     # Fondo del menú
     fondo_menu = pygame.transform.scale(pygame.image.load(config.RUTA_FONDO_MENU), config.FONDO_SIZE)
     ancho_fondo_menu, alto_fondo_menu = fondo_menu.get_size()
@@ -42,11 +47,18 @@ def cargar_assets():
     zombie_muerto = pygame.image.load(config.RUTA_ZOMBIE_MUERTO).convert_alpha()
     zombie_muerto = pygame.transform.scale(zombie_muerto, config.ZOMBIE_SIZE)
 
+    zombie_fuerte = gif_pygame.load(config.RUTA_ZOMBIE_FUERTE)
+
+    zombie_herido = gif_pygame.load(config.RUTA_ZOMBIE_HERIDO)
+
 
     return {
         "imagenes": {
-            "fondo_juego": fondo_juego,
             "fondo_menu": fondo_menu,
+            "fondo_juego": fondo_juego,
+            "fondo_noche": fondo_noche,
+            "fondo_actual": fondo_juego,
+            "ultimo_cambio_fondo": 0,
             "ancho_fondo_juego": ancho_fondo_juego,
             "alto_fondo_juego": alto_fondo_juego,
             "ancho_fondo_menu": ancho_fondo_menu,
@@ -65,6 +77,8 @@ def cargar_assets():
             "disparo": disparo,
             "bala_img": bala_img,
             "zombie_img": zombie_img,
+            "zombie_fuerte": zombie_fuerte,
+            "zombie_herido": zombie_herido,
             "zombie_muerto": zombie_muerto
         }
     }

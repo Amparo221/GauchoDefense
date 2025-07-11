@@ -36,11 +36,14 @@ def crear_estado_inicial():
             "disparo_playing": 0
         },
         "puntuacion":  0,
-        "vidas":  3
+        "vidas":  3,
+        "fondo_x": 0,
+        "fondo_actual": "fondo_juego",
+        "ultimo_cambio_fondo": 0
     }
 
 def accionar_game_over(pantalla, estado, assets):
     '''Muestra la pantalla de Game Over y guarda la puntuación del jugador.'''
     dibujar_game_over(pantalla, assets["fuentes"]["fuente_grande"])
     agregar_puntuacion(pedir_nombre_jugador(pantalla, assets["fuentes"]["fuente_jugador"]), estado["puntuacion"])
-    mostrar_ranking(pantalla, assets["fuentes"]["fuente_mediana"])
+    mostrar_ranking(pantalla, assets)

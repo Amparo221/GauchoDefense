@@ -1,14 +1,20 @@
-import pygame
 import config
+import pygame
 
-
-def dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo):
-    """Dibuja el fondo tileado en la pantalla.
-    Repite la imagen de fondo para cubrir toda la superficie de la pantalla.
-    """
+def dibujar_fondo_estatico(pantalla, fondo, ancho_fondo, alto_fondo):
     for y in range(0, pantalla.get_height(), alto_fondo):
         for x in range(0, pantalla.get_width(), ancho_fondo):
             pantalla.blit(fondo, (x, y))
+
+def dibujar_fondo_juego(pantalla, fondo, ancho_fondo, alto_fondo, estado):    
+    estado["fondo_x"] -= config.BACKGROUND_SPEED
+
+    if estado["fondo_x"] <= -ancho_fondo:
+        estado["fondo_x"] = 0
+
+    for y in range(0, pantalla.get_height(), alto_fondo):
+        for x in range(0, pantalla.get_width() + ancho_fondo, ancho_fondo):
+            pantalla.blit(fondo, (x + estado["fondo_x"], y))
 
 def dibujar_hud(pantalla, fuente_hud, puntaje, vidas):
     """Dibuja el HUD con la puntuación y las vidas del jugador.

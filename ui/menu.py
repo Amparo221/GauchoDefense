@@ -1,6 +1,6 @@
 import pygame
 from game.audio import reproducir_musica, detener_musica, reproducir_sonido
-from ui.renderer import dibujar_fondo, dibujar_titulo
+from ui.renderer import dibujar_fondo_estatico, dibujar_titulo
 import config
 
 # Creamos reloj local para controlar FPS
@@ -103,7 +103,7 @@ def mostrar_menu(pantalla, assets, sonido: list[dict]) -> str:
 
     while ejecucion:
         # Dibujo de fondo tileado
-        dibujar_fondo(pantalla, assets["imagenes"]["fondo_menu"], assets["imagenes"]["ancho_fondo_menu"], assets["imagenes"]["alto_fondo_menu"])
+        dibujar_fondo_estatico(pantalla, assets["imagenes"]["fondo_menu"], assets["imagenes"]["ancho_fondo_menu"], assets["imagenes"]["alto_fondo_menu"])
 
         # Título centrado
         dibujar_titulo(pantalla, assets["fuentes"]["fuente_titulo_principal"])

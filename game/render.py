@@ -1,18 +1,18 @@
 import pygame
-from ui.renderer import dibujar_fondo, dibujar_hud, dibujar_enemigos
+from ui.renderer import dibujar_fondo_juego, dibujar_hud, dibujar_enemigos
 from entities.jugador import crear_balas, generar_animaciones
 
 def renderizar_juego(pantalla, estado, assets):
-    """Renderiza el estado actual del juego en la pantalla.
-    Args:
-        pantalla (pygame.Surface): Superficie donde se dibuja el juego.
-        estado (dict): Estado actual del juego, incluyendo jugador, enemigos, balas, etc.
-        assets (dict): Diccionario con los assets cargados (imágenes, sonidos, etc.).
-    """
-    # Limpiar pantalla
-    pantalla.fill((0, 0, 0))  # Color
+    # crear_fondo, crear_balas, animaciones, dibujar_zombies, HUD…
+    if estado["puntuacion"] // 5 > estado["ultimo_cambio_fondo"]:
+        fondos                        = ["fondo_juego", "fondo_noche"]
+        idx_actual                        = fondos.index(estado["fondo_actual"])
+        idx_nuevo                         = (idx_actual + 1) % len(fondos)
+        estado["fondo_actual"]        = fondos[idx_nuevo]
+        estado["ultimo_cambio_fondo"] = estado["puntuacion"] // 5
 
-    dibujar_fondo(pantalla, assets["imagenes"]["fondo_juego"], assets["imagenes"]["ancho_fondo_juego"], assets["imagenes"]["alto_fondo_juego"])
+    fondo_usado = assets["imagenes"][estado["fondo_actual"]] 
+    dibujar_fondo_juego(pantalla, fondo_usado, assets["imagenes"]["ancho_fondo_juego"], assets["imagenes"]["alto_fondo_juego"], estado)
 
     crear_balas(pantalla, estado.get("balas", []), assets["sprites"]["bala_img"])
 
