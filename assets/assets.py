@@ -29,6 +29,9 @@ def cargar_assets() -> dict:
     pantalla = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption("Gaucho Defense")  # Título de la ventana
 
+    icono = pygame.image.load("assets/images/gaucho_logo.ico")
+    pygame.display.set_icon(icono)
+
     # Fondo
     fondo = pygame.image.load(RUTA_FONDO_JUEGO).convert_alpha()
     fondo = pygame.transform.scale(fondo, FONDO_SIZE)
