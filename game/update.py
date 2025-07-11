@@ -15,6 +15,11 @@ def actualizar_juego(estado: dict, assets: dict, sonido: dict) -> None:
       5. Mueve al jugador y invoca el disparo de balas.
       6. Marca game_over si vidas <= 0.
       7. Actualiza la puntuacion.
+
+    Args:
+        estado: dict
+        assets: dict
+        sonido: dict
     """
     tiempo_actual = pygame.time.get_ticks()
 

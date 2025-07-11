@@ -9,7 +9,7 @@ from game.audio import inicializar_audio, cargar_sonido, cambiar_musica, play_cl
 from config import *
 
 
-def main():
+def main() -> None:
     """
     Inicializa el juego:
     - Carga el sonido

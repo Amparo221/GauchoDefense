@@ -7,6 +7,11 @@ def renderizar_juego(pantalla: pygame.surface, estado: dict, assets: dict) -> No
     Recibe superficie pantalla y diccionarios estado y assets.
     Cada 5 puntos cambia de fondo.
     Renderiza el fondo, el HUD, las balas, el jugador y los enemigos.
+
+    Args:
+        pantalla (pygame.surface): superficie de la pantalla del juego.
+        estado (dict): diccionario con el estado del juego.
+        assets (dict): diccionario con los assets del juego.
     """
     if estado["puntuacion"] // 5 > estado["ultimo_cambio_fondo"]:
         fondos                        = ["fondo", "fondo_noche"]

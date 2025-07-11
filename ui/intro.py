@@ -3,14 +3,17 @@ import sys
 from pygame.locals import *
 from config import ANCHO, ALTO, NEGRO, BLANCO, FUENTE_MEDIANA
 
-def mostrar_introduccion(pantalla):
+def mostrar_introduccion(pantalla: pygame.surface) -> None:
     """
     Muestra la pantalla de introduccion con el texto proporcionado.
     Retorna cuando se presiona ESC o despues del tiempo de espera.
+
+    Args:
+        pantalla (pygame.surface): superficie de la pantalla del juego
     """
     texto = [
-        "Año 18XX",
-        "[nombre] se encuentraba intentando descansar",
+        "Año 1825",
+        "Juan Moreira se encuentraba intentando descansar",
         "de los efectos de la guerra, después de haber sido",
         "reclutado para luchar junto con Martín Miguel de Güemes,",
         "como muchos otros gauchos. Cuando de repente escucha",

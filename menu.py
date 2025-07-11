@@ -16,6 +16,12 @@ def crear_botones(musica_pausada: bool) -> list[dict]:
     - normal, hover: declara y asigna superficies para cada estado
     - rect: posición
     Retorna botones
+
+    Args:
+        musica_pausada (bool): Estado de la música.
+
+    Returns:
+        list[dict]: botones
     """
     etiquetas = [
         ("Jugar", 200),
@@ -43,6 +49,10 @@ def dibujar_botones(pantalla: pygame.Surface, botones: list[dict]) -> None:
     Recibe pantalla, donde dibuja botones. 
     Declara una colision con el mouse: en estado pasivo la superficie surf_norm,
     en estado activo la superficie surf_hover
+
+    Args:
+        pantalla (pygame.surface): superficie de la pantalla del juego.
+        botones (list[dict]): lista de diccionarios con informacion de los botones.
     """
     pos_mouse = pygame.mouse.get_pos()
     for btn in botones:
@@ -59,6 +69,14 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
       - Si se clickea Pausar/Reanudar Música: alterna estado y retorna (None, nuevo_estado)
       - ENTER sobre botón: equivalente a clic
       - El evento click izquierdo: reproduce sonido de click
+
+    Args:
+        botones (list[dict]): lista de diccionarios con informacion de los botones.
+        sonidos_menu (dict): diccionario con sonidos del menu.
+        musica_pausada (bool): Estado de la musica.
+
+    Returns:
+        tuple[ str|None, bool ]: (clave, musica_pausada)
     """
     seleccion = None
     pos_mouse = pygame.mouse.get_pos()
@@ -100,8 +118,15 @@ def mostrar_menu(assets: dict, sonido: dict) -> str:
       1. Carga assets y sonidos
       2. Itera: dibuja fondo menu, dibuja título, dibuja botones, manejar eventos
       3. Retorna la acción seleccionada
+
+    Args:
+        assets (dict): diccionario con assets del juego.
+        sonido (dict): diccionario con sonidos del juego.
+
+    Returns:
+        str: accion seleccionada
     """
-    # 1) Inicialización local
+
     datos = assets
     pantalla = datos["pantalla"]
     fondo = datos["fondo_menu"]
