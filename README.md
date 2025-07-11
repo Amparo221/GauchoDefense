@@ -27,7 +27,7 @@ Juego de acción 2D ambientado en la Argentina del siglo XIX, despues de la Guer
     git clone https://github.com/Amparo221/GauchoDefense.git
    cd gaucho-defense
 
-2. Ejecutar el juego:
+3. Ejecutar el juego:
     python main.py
 
 
