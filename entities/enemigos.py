@@ -1,40 +1,60 @@
 import pygame
 import random
-from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, RUTA_ZOMBIE_MUERTO
+import config
 from game.audio import reproducir_sonido
 
 
-def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, zombie_img):
-    if tiempo_ahora - ultimo_spawn >= SPAWN_TIEMPO:
-        y = random.choice(SPAWN_DISPONIBLES)
+def spawn_zombie(tiempo_ahora, ultimo_spawn, lista_enemigos, assets):
+    if tiempo_ahora - ultimo_spawn >= config.SPAWN_TIEMPO:
+        y = random.choice(config.SPAWN_DISPONIBLES)
 
-        zombie_rect = pygame.Rect(ancho_screen, y, *ZOMBIE_SIZE)
-        lista_enemigos.append({
-            "rect": zombie_rect, 
-            "img": zombie_img,
-            "vivo": True
-        })
+        zombie_rect = pygame.Rect(config.ANCHO, y, *config.ZOMBIE_SIZE)
 
+        # Por medio de random se puede manejar la probabilidad de aparicion de un enemigo fuerte, en este caso 30%
+        es_fuerte = random.random() < 0.3 
+
+        if es_fuerte:
+            enemigo = {
+                "rect": zombie_rect,
+                "img": assets["sprites"]["zombie_fuerte"],
+                "img_herido": assets["sprites"]["zombie_herido"],
+                "vivo": True,
+                "vida": 2
+            }
+        else:
+            enemigo = {
+                "rect": zombie_rect,
+                "img": assets["sprites"]["zombie_img"],
+                "vivo": True,
+                "vida": 1
+            }
+
+        lista_enemigos.append(enemigo)
         return tiempo_ahora
     return ultimo_spawn
 
 def mover_zombies(lista_enemigos):
     for z in lista_enemigos:
-        z["rect"].x -= ZOMBIE_SPEED
+        z["rect"].x -= config.ZOMBIE_SPEED
 
 def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, tiempo_ahora, sonido_hit):
     for bala in balas[:]:
         bala_rect = pygame.Rect(bala[0], bala[1], 15, 5)
         for z in lista_enemigos[:]:
             if z["vivo"] and bala_rect.colliderect(z["rect"]):
-                z["vivo"] = False
-                z["img"] = zombie_muerto_img
-                z["tiempo_muerte"] = tiempo_ahora  # guardo el momento que murió
+                z["vida"] -= 1
+
+                if z["vida"] == 1 and "img_herido" in z:
+                    z["img"] = z["img_herido"]
+
+                if z["vida"] <= 0:
+                    z["vivo"] = False
+                    z["img"] = zombie_muerto_img
+                    z["tiempo_muerte"] = tiempo_ahora
+                    puntuacion += 1
 
                 reproducir_sonido(sonido_hit, "hit_zombie")
-
                 balas.remove(bala)
-                puntuacion += 1
                 break
     return puntuacion
 

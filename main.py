@@ -1,43 +1,45 @@
 import pygame, sys
-from menu import mostrar_menu
+from ui.menu import mostrar_menu
 from ui.ranking import mostrar_ranking
+from ui.intro import mostrar_introduccion
 from game.utils import mostrar_creditos
 from game.ejecutar_juego import iniciar_juego
 from assets.assets import cargar_assets
 from game.audio import inicializar_audio, cargar_sonido, cambiar_musica, play_click
-from config import *
+import config
 
 
 def main():
     pygame.init()
-    inicializar_audio()  # Inicializa el mixer de Pygame
+    inicializar_audio() 
     sonido = cargar_sonido()
+    pantalla = pygame.display.set_mode((config.ANCHO, config.ALTO))
 
     assets = cargar_assets()
-    pantalla = assets["pantalla"]
 
-    cambiar_musica("menu")  # Arranca música del menú
+    cambiar_musica("menu")  
 
     ejecucion = True
     while ejecucion:
-        accion = mostrar_menu(assets, sonido) 
+        accion = mostrar_menu(pantalla, assets, sonido) 
 
         if accion == "jugar":
             play_click(sonido)
+            mostrar_introduccion(pantalla, assets)
             cambiar_musica("juego")
             # Arranca el juego
-            iniciar_juego(assets)
+            iniciar_juego(assets, sonido, pantalla)
             # Reproduce música del menú
-            cambiar_musica("menu")
+            cambiar_musica(config.MODE_MENU)
 
-        elif accion == "ranking":
+        elif accion == config.MODE_RANKING:
             play_click(sonido)
-            mostrar_ranking(pantalla)
+            mostrar_ranking(pantalla, assets)
             pygame.time.delay(250)
 
         elif accion in ("créditos", "creditos"):
             play_click(sonido)
-            mostrar_creditos(pantalla)
+            mostrar_creditos(pantalla, assets)
             pygame.time.delay(250)
 
         elif accion == "salir":
@@ -47,7 +49,6 @@ def main():
             sys.exit()
 
         else:
-            # Si ocurre algo sin manejar volver al menú por default
             print(f"Opción inválida ({accion}), regresando al menú...")
             pygame.time.delay(500)
 

@@ -1,7 +1,7 @@
 import pygame
 from entities.jugador import (movimiento_jugador, disparar_balas)
 from entities.enemigos import (spawn_zombie, mover_zombies, detectar_colisiones, verificar_choque_con_jugador, remover_zombies_muertos)
-from config import (ANCHO, ALTO, GAUCHO_SIZE)
+import config
 from game.audio import reproducir_sonido
 
 def actualizar_juego(estado, assets, sonido):
@@ -18,12 +18,10 @@ def actualizar_juego(estado, assets, sonido):
     estado["tiempos"]["ultimo_spawn"] = spawn_zombie(
         tiempo_actual,
         estado["tiempos"]["ultimo_spawn"],
-        ANCHO,
         estado["enemigos"],
-        assets["zombie_img"]
+        assets
     )
 
-    # Mover zombies
     mover_zombies(estado["enemigos"])
 
     # Si los zombies que escapan = restar vidas
@@ -37,7 +35,7 @@ def actualizar_juego(estado, assets, sonido):
         balas = estado["balas"],
         puntuacion = estado["puntuacion"],
         lista_enemigos = estado["enemigos"],
-        zombie_muerto_img=assets["zombie_muerto"],
+        zombie_muerto_img=assets["sprites"]["zombie_muerto"],
         tiempo_ahora = tiempo_actual,
         sonido_hit = sonido
     )
@@ -48,7 +46,7 @@ def actualizar_juego(estado, assets, sonido):
     player_rect = pygame.Rect(
         estado["jugador"]["x"],
         estado["jugador"]["y"],
-        *GAUCHO_SIZE
+        *config.GAUCHO_SIZE
     )
     estado["vidas"] = verificar_choque_con_jugador(
         player_rect,
@@ -67,7 +65,6 @@ def actualizar_juego(estado, assets, sonido):
     estado["jugador"]["y"], estado["jugador"]["en_movimiento"] = movimiento_jugador(
         estado["jugador"]["y"],
         estado["jugador"]["velocidad_movimiento"],
-        ALTO
     )
 
     # Disparo de balas (space + cooldown)
