@@ -1,5 +1,5 @@
 import pygame
-from config import FONT_HUD, BLANCO, BACKGROUND_SPEED
+import config
 
 def dibujar_fondo_estatico(pantalla: pygame.surface, fondo: pygame.surface, ancho_fondo: int, alto_fondo: int) -> None:
     """
@@ -27,7 +27,7 @@ def dibujar_fondo(pantalla: pygame.surface, fondo: pygame.surface, ancho_fondo: 
         alto_fondo (int): alto del fondo.
         estado (dict): diccionario con el estado del juego.
     """  
-    estado["fondo_x"] -= BACKGROUND_SPEED
+    estado["fondo_x"] -= config.BACKGROUND_SPEED
 
     if estado["fondo_x"] <= -ancho_fondo:
         estado["fondo_x"] = 0
@@ -45,7 +45,7 @@ def dibujar_hud(pantalla: pygame.surface, puntaje: int, vidas: int) -> None:
         puntaje (int): puntaje del jugador.
         vidas (int): vidas del jugador.
     """
-    texto = FONT_HUD.render(f'Puntuación: {puntaje}  Vidas: {vidas}', True, BLANCO)
+    texto = config.FONT_HUD.render(f'Puntuación: {puntaje}  Vidas: {vidas}', True, config.BLANCO)
     pantalla.blit(texto, (10, 10))
 
 def dibujar_enemigos(pantalla: pygame.surface, lista_enemigos: list) -> None:

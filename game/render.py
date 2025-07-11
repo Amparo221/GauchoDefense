@@ -13,12 +13,12 @@ def renderizar_juego(pantalla: pygame.surface, estado: dict, assets: dict) -> No
         estado (dict): diccionario con el estado del juego.
         assets (dict): diccionario con los assets del juego.
     """
-    if estado["puntuacion"] // 5 > estado["ultimo_cambio_fondo"]:
+    if estado["puntuacion"] // 30 > estado["ultimo_cambio_fondo"]:
         fondos                        = ["fondo", "fondo_noche"]
         actual                        = fondos.index(estado["fondo_actual"])
         nuevo                         = (actual + 1) % len(fondos)
         estado["fondo_actual"]        = fondos[nuevo]
-        estado["ultimo_cambio_fondo"] = estado["puntuacion"] // 5
+        estado["ultimo_cambio_fondo"] = estado["puntuacion"] // 30
     
     fondo_usado = assets[estado["fondo_actual"]]
     dibujar_fondo(pantalla, fondo_usado, assets["ancho_fondo"], assets["altura_fondo"], estado)

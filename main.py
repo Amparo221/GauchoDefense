@@ -1,12 +1,12 @@
 import pygame, sys
-from menu import mostrar_menu
+from ui.menu import mostrar_menu
 from ui.ranking import mostrar_ranking
 from ui.intro import mostrar_introduccion
 from game.utils import mostrar_creditos
 from game.ejecutar_juego import iniciar_juego
 from assets.assets import cargar_assets
 from game.audio import inicializar_audio, cargar_sonido, cambiar_musica, play_click
-from config import *
+import config
 
 
 def main() -> None:
@@ -35,24 +35,24 @@ def main() -> None:
     while ejecucion:
         accion = mostrar_menu(assets, sonido) 
 
-        if accion == "jugar":
+        if accion == config.MODE_JUGAR:
             play_click(sonido)
             mostrar_introduccion(pantalla)
             cambiar_musica("juego")
             iniciar_juego(assets)
             cambiar_musica("menu")
 
-        elif accion == "ranking":
+        elif accion == config.MODE_RANKING:
             play_click(sonido)
             mostrar_ranking(pantalla)
             pygame.time.delay(250)
 
-        elif accion in ("créditos", "creditos"):
+        elif accion == config.MODE_CREDITOS:
             play_click(sonido)
             mostrar_creditos(pantalla)
             pygame.time.delay(250)
 
-        elif accion == "salir":
+        elif accion == config.MODE_SALIR:
             play_click(sonido)
             pygame.time.delay(1300)
             pygame.quit()

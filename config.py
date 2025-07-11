@@ -78,4 +78,8 @@ SPAWN_DISPONIBLES = [50, 150, 250, 350, 450] # cambiar por random
 # Menu
 MODE_QUIT = "quit"
 MODE_MENU = "menu"
+MODE_JUGAR = "jugar"
+MODE_RANKING = "ranking"
+MODE_CREDITOS = "créditos"
+MODE_SALIR = "salir"
 

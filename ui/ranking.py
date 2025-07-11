@@ -2,10 +2,7 @@ import json
 import os
 import pygame
 import sys
-from config import (
-    ANCHO, ALTO, BLANCO, NEGRO,
-    RANKING_PATH, FUENTE_MEDIANA
-)
+import config
 
 
 def get_puntaje(entry: dict) -> int:
@@ -21,7 +18,7 @@ def get_puntaje(entry: dict) -> int:
     return entry["puntaje"]
 
 
-def cargar_puntuaciones(path: str = RANKING_PATH) -> list:
+def cargar_puntuaciones() -> list:
     """
     Abre el archivo JSON de ranking en 'path', lo lee, convierte a dict Python
     y retorna el top-5 ordenado.
@@ -33,20 +30,20 @@ def cargar_puntuaciones(path: str = RANKING_PATH) -> list:
     Returns:
         list (mejores 5 puntuaciones)
     """
-    if not os.path.exists(path):
+    if not os.path.exists(config.RANKING_PATH):
         return []
 
-    tamaño = os.path.getsize(path)
+    tamaño = os.path.getsize(config.RANKING_PATH)
     if tamaño == 0:
         return []
 
-    with open(path, "r", encoding="utf-8") as f:
+    with open(config.RANKING_PATH, "r", encoding="utf-8") as f:
         datos = json.load(f)
 
     return obtener_mejores_puntuaciones(datos, top_n=5)
 
 
-def guardar_puntuaciones(puntuaciones: list, path: str = RANKING_PATH) -> None:
+def guardar_puntuaciones(puntuaciones: list) -> None:
     """
     Escribe la lista 'puntuaciones' en formato JSON en 'path'.
     Chequea que el directorio exista, si es asi no hace nada.
@@ -56,11 +53,11 @@ def guardar_puntuaciones(puntuaciones: list, path: str = RANKING_PATH) -> None:
         puntuaciones: list
         path: str
     """
-    carpeta = os.path.dirname(path)
+    carpeta = os.path.dirname(config.RANKING_PATH)
     if carpeta != "":
         os.makedirs(carpeta, exist_ok=True)
 
-    with open(path, "w", encoding="utf-8") as f:
+    with open(config.RANKING_PATH, "w", encoding="utf-8") as f:
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
@@ -96,7 +93,7 @@ def obtener_mejores_puntuaciones(puntuaciones: list, top_n: int = 5) -> list:
     return resultado
 
 
-def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
+def agregar_puntuacion(nombre: str, puntaje: int) -> bool:
     """
     Inserta un nuevo puntaje si hay < 5 o es >= al mínimo del top-5.
     Retorna True si se guardó, False en caso contrario.
@@ -109,7 +106,7 @@ def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
     Returns:
         bool
     """
-    scores = cargar_puntuaciones(path)
+    scores = cargar_puntuaciones(config.RANKING_PATH)
 
     debe_insertar = False
     if len(scores) < 5:
@@ -123,13 +120,13 @@ def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
         nueva_entrada = {"nombre": nombre, "puntaje": puntaje}
         scores.append(nueva_entrada)
         top5 = obtener_mejores_puntuaciones(scores, top_n=5)
-        guardar_puntuaciones(top5, path)
+        guardar_puntuaciones(top5, config.RANKING_PATH)
         return True
 
     return False
 
 
-def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
+def mostrar_ranking(screen: pygame.Surface) -> None:
     """
     Carga, muestra y da formato en pantalla el top-5 de puntuaciones.
     Espera ESC o cierre de ventana para volver.
@@ -138,7 +135,7 @@ def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
         screen: pygame.surface
         path: str
     """
-    puntuaciones = cargar_puntuaciones(path)
+    puntuaciones = cargar_puntuaciones()
     top5 = obtener_mejores_puntuaciones(puntuaciones, top_n=5)
 
     clock = pygame.time.Clock()
@@ -153,10 +150,10 @@ def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
                 if evento.key == pygame.K_ESCAPE:
                     en_ranking = False
 
-        screen.fill(NEGRO)
+        screen.fill(config.NEGRO)
 
-        titulo_surf = FUENTE_MEDIANA.render("Top 5 Gaucho Defense", True, BLANCO)
-        titulo_rect = titulo_surf.get_rect(center=(ANCHO // 2, 60))
+        titulo_surf = config.FUENTE_MEDIANA.render("Top 5 Gaucho Defense", True, config.BLANCO)
+        titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 60))
         screen.blit(titulo_surf, titulo_rect)
 
         base_y = 150
@@ -165,13 +162,13 @@ def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
         for i in range(len(top5)):
             entrada = top5[i]
             texto = str(i+1) + ". " + entrada["nombre"] + " — " + str(entrada["puntaje"])
-            surf = FUENTE_MEDIANA.render(texto, True, BLANCO)
-            rect = surf.get_rect(center=(ANCHO // 2, y_actual))
+            surf = config.FUENTE_MEDIANA.render(texto, True, config.BLANCO)
+            rect = surf.get_rect(center=(config.ANCHO // 2, y_actual))
             screen.blit(surf, rect)
             y_actual += espacio
 
-        info_surf = FUENTE_MEDIANA.render("Presiona ESC para volver", True, BLANCO)
-        info_rect = info_surf.get_rect(center=(ANCHO // 2, ALTO - 40))
+        info_surf = config.FUENTE_MEDIANA.render("Presiona ESC para volver", True, config.BLANCO)
+        info_rect = info_surf.get_rect(center=(config.ANCHO // 2, config.ALTO - 40))
         screen.blit(info_surf, info_rect)
 
         pygame.display.flip()

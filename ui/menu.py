@@ -2,7 +2,7 @@ import pygame
 from game.audio import reproducir_musica, cargar_sonido, detener_musica, reproducir_sonido
 from assets.assets import cargar_assets
 from ui.renderer import dibujar_fondo_estatico
-from config import *
+import config
 
 # Creamos reloj local para controlar FPS
 eclock = pygame.time.Clock()
@@ -32,9 +32,9 @@ def crear_botones(musica_pausada: bool) -> list[dict]:
     ]
     botones = []
     for texto, y in etiquetas:
-        surf_norm = FUENTE_GRANDE.render(texto, True, BLANCO)
-        surf_hover = FUENTE_GRANDE.render(texto, True, COLOR_HOVER)
-        rect = surf_norm.get_rect(center=(ANCHO // 2, y))
+        surf_norm = config.FUENTE_GRANDE.render(texto, True, config.BLANCO)
+        surf_hover = config.FUENTE_GRANDE.render(texto, True, config.COLOR_HOVER)
+        rect = surf_norm.get_rect(center=(config.ANCHO // 2, y))
         botones.append({
             "clave": texto.lower(),
             "normal": surf_norm,
@@ -87,10 +87,10 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
 
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            return "salir", musica_pausada
+            return config.MODE_QUIT, musica_pausada
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_ESCAPE:
-                return "salir", musica_pausada
+                return config.MODE_SALIR, musica_pausada
             if evento.key == pygame.K_RETURN and seleccion is not None:
                 return botones[seleccion]["clave"], musica_pausada
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1 and seleccion is not None:
@@ -98,13 +98,13 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
             clave = botones[seleccion]["clave"]
             if clave in ("pausar música", "reanudar música"):
                 if not musica_pausada:
-                    detener_musica(VOLUMEN_MUSIC_MENU["fade_ms"])
+                    detener_musica(config.VOLUMEN_MUSIC_MENU["fade_ms"])
                 else:
                     reproducir_musica(
-                        RUTA_MUSICA_MENU,
+                        config.RUTA_MUSICA_MENU,
                         loops=-1,
-                        volume=VOLUMEN_MUSIC_MENU["volumen"],
-                        fade_ms=VOLUMEN_MUSIC_MENU["fade_ms"]
+                        volume=config.VOLUMEN_MUSIC_MENU["volumen"],
+                        fade_ms=config.VOLUMEN_MUSIC_MENU["fade_ms"]
                     )
                 musica_pausada = not musica_pausada
                 return None, musica_pausada
@@ -140,8 +140,8 @@ def mostrar_menu(assets: dict, sonido: dict) -> str:
     while ejecucion:
         dibujar_fondo_estatico(pantalla, fondo, ancho_fondo, alto_fondo)
 
-        titulo_surf = FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, BLANCO)
-        titulo_rect = titulo_surf.get_rect(center=(ANCHO // 2, 100))
+        titulo_surf = config.FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, config.BLANCO)
+        titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 100))
         pantalla.blit(titulo_surf, titulo_rect)
 
         botones = crear_botones(musica_pausada)
