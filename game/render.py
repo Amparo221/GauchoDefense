@@ -2,8 +2,12 @@ import pygame
 from ui.renderer import dibujar_fondo, dibujar_hud, dibujar_enemigos
 from entities.jugador import crear_balas, generar_animaciones
 
-def renderizar_juego(pantalla, estado, assets):
-    # crear_fondo, crear_balas, animaciones, dibujar_zombies, HUD…
+def renderizar_juego(pantalla: pygame.surface, estado: dict, assets: dict) -> None:
+    """
+    Recibe superficie pantalla y diccionarios estado y assets.
+    Cada 5 puntos cambia de fondo.
+    Renderiza el fondo, el HUD, las balas, el jugador y los enemigos.
+    """
     if estado["puntuacion"] // 5 > estado["ultimo_cambio_fondo"]:
         fondos                        = ["fondo", "fondo_noche"]
         actual                        = fondos.index(estado["fondo_actual"])
@@ -33,10 +37,8 @@ def renderizar_juego(pantalla, estado, assets):
     estado["flags"]["disparo_playing"]      = dp_playing
     estado["tiempos"]["tiempo_inicio_disparo"] = dp_start
     
-    # dibujar zombies
     dibujar_enemigos(pantalla, estado["enemigos"])
 
-    # HUD
     dibujar_hud(pantalla, estado["puntuacion"], estado["vidas"])
     
     pygame.display.flip()

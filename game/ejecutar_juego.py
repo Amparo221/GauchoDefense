@@ -6,14 +6,20 @@ from game.input_handler import procesar_eventos
 from game.update import actualizar_juego
 from game.render import renderizar_juego
 
-def iniciar_juego(assets):
+def iniciar_juego(assets: dict) -> None:
+    """
+    Recibe diccionario de assets.
+    Inicializa la musica y activa la actualizacion constante de estado del juego.
+    Invoca la renderizacion del juego.
+    Args:
+        assets: dict
+    """
     pantalla = assets["pantalla"]
     clock = pygame.time.Clock()
     estado = crear_estado_inicial()     
     sonido = cargar_sonido()
 
-
-    reproducir_musica(RUTA_MUSICA_JUEGO, volume=VOLUMEN_MUSIC_JUEGO["volumen"], fade_ms=VOLUMEN_MUSIC_JUEGO["fade_ms"])  # Reproduce música del menú 
+    reproducir_musica(RUTA_MUSICA_JUEGO, volume=VOLUMEN_MUSIC_JUEGO["volumen"], fade_ms=VOLUMEN_MUSIC_JUEGO["fade_ms"]) 
     
     modo = None
 
@@ -25,7 +31,6 @@ def iniciar_juego(assets):
         if modo == "menu":   
             return
 
-        # logica del juego
         actualizar_juego(estado, assets, sonido)
         if estado["flags"]["game_over"]: 
             pygame.mixer.music.fadeout(1000)

@@ -4,7 +4,21 @@ from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, R
 from game.audio import reproducir_sonido
 
 
-def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, assets):
+def spawn_zombie(tiempo_ahora: int, ultimo_spawn: int, ancho_screen: int, lista_enemigos: list, assets: dict) -> int:
+    """
+    Se maneja el spawneo de los enemigos, se generan los dos tipos de zombies y se stackean en diccionarios.
+
+    Args: 
+        tiempo_ahora: int
+        ultimo_spawn: int
+        ancho_screen: int
+        lista_enemigos: list
+        assets: dict
+
+    Returns:
+        int
+
+    """
     if tiempo_ahora - ultimo_spawn >= SPAWN_TIEMPO:
         y = random.choice(SPAWN_DISPONIBLES)
 
@@ -33,11 +47,19 @@ def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, asset
         return tiempo_ahora
     return ultimo_spawn
 
-def mover_zombies(lista_enemigos):
+def mover_zombies(lista_enemigos: list) -> None:
+    """"
+    Se mueven los enemigos hacia la izquierda
+    Args:
+        lista_enemigos: list
+    """
     for z in lista_enemigos:
         z["rect"].x -= ZOMBIE_SPEED
 
-def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, tiempo_ahora, sonido_hit):
+def detectar_colisiones(balas: list, puntuacion: int, lista_enemigos: list, zombie_muerto_img: pygame.surface, tiempo_ahora: int, sonido_hit: dict) -> int:
+    """
+    
+    """
     for bala in balas[:]:
         bala_rect = pygame.Rect(bala[0], bala[1], 15, 5)
         for z in lista_enemigos[:]:

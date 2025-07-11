@@ -2,7 +2,11 @@ from config import MODE_QUIT, MODE_MENU
 import pygame
 
 
-def procesar_eventos():
+def procesar_eventos() -> str:
+    """
+    Si el user cierra la ventana, retorna MODE_QUIT.
+    Si el user acciona ESC, retorna MODE_MENU.
+    """
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             return MODE_QUIT

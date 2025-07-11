@@ -2,10 +2,8 @@ from config import *
 from game.utils import pedir_nombre_jugador
 from ui.ranking import agregar_puntuacion, mostrar_ranking
 
-
-# Define un diccionario con el estado inicial del juego 
-def crear_estado_inicial():
-    '''
+def crear_estado_inicial() -> dict:
+    """
     Crea y devuelve un diccionario con el estado inicial del juego.
     Contiene:
     - jugador: posición, velocidad y estado de movimiento.
@@ -14,7 +12,9 @@ def crear_estado_inicial():
     - tiempos: último spawn de enemigos y último disparo.
     - flags: indicadores de estado del juego (game_over, ejecucion, disparar).
     - puntuacion: puntuacion inicial del jugador.
-    - vidas: número de vidas iniciales del jugador.'''
+    - vidas: número de vidas iniciales del jugador.
+    - datos para la transicion del fondo
+    """
     return {
         "jugador": {
             "x":0,
@@ -42,10 +42,12 @@ def crear_estado_inicial():
         "ultimo_cambio_fondo": 0
     }
 
-def accionar_game_over(pantalla, estado):
-    # muestra “Perdiste”, pide nombre con pedir_nombre_jugador(),
-    # agregar_puntuacion(name, estado["puntuacion"])
-    # pantalla de game over
+def accionar_game_over(pantalla: pygame.surface, estado: dict) -> None:
+    """
+    Recibe pantalla y estado. 
+    Muestra y da formato en pantalla a Game Over.
+    Invoca pedir_nombre_jugador(), agregar_puntuacion(), mostrar_ranking()
+    """    
     pantalla.fill(NEGRO)
     texto_partida_perdida = FONT_TITLE.render('Perdiste, Canejo', True, BLANCO)
     pantalla.blit(texto_partida_perdida, texto_partida_perdida.get_rect(center=(ANCHO//2, ALTO//2 - 50)))

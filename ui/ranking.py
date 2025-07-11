@@ -10,7 +10,7 @@ from config import (
 
 def get_puntaje(entry: dict) -> int:
     """
-    Extrae el valor de 'puntaje' de una entrada de ranking.
+    Extrae el valor "puntaje" de una diccionario de ranking.
     """
     return entry["puntaje"]
 
@@ -48,7 +48,7 @@ def guardar_puntuaciones(puntuaciones: list, path=RANKING_PATH) -> None:
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
+def obtener_mejores_puntuaciones(puntuaciones: list, top_n=5) -> list:
     """
     Ordena la lista 'puntuaciones' de mayor a menor, y devuelve las primeras 'top_n'.
     """
@@ -73,9 +73,9 @@ def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
     return resultado
 
 
-def agregar_puntuacion(nombre, puntaje, path=RANKING_PATH):
+def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
     """
-    Inserta un nuevo puntaje si hay <5 o es >= al mínimo del top-5.
+    Inserta un nuevo puntaje si hay < 5 o es >= al mínimo del top-5.
     Retorna True si se guardó, False en caso contrario.
     """
     scores = cargar_puntuaciones(path)
@@ -98,9 +98,9 @@ def agregar_puntuacion(nombre, puntaje, path=RANKING_PATH):
     return False
 
 
-def mostrar_ranking(screen, path=RANKING_PATH):
+def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
     """
-    Muestra en pantalla el top-5 de puntuaciones.
+    Carga, muestra y da formato en pantalla el top-5 de puntuaciones.
     Espera ESC o cierre de ventana para volver.
     """
     puntuaciones = cargar_puntuaciones(path)
@@ -120,12 +120,10 @@ def mostrar_ranking(screen, path=RANKING_PATH):
 
         screen.fill(NEGRO)
 
-        # Título
         titulo_surf = FUENTE_MEDIANA.render("Top 5 Gaucho Defense", True, BLANCO)
         titulo_rect = titulo_surf.get_rect(center=(ANCHO // 2, 60))
         screen.blit(titulo_surf, titulo_rect)
 
-        # Entradas de ranking
         base_y = 150
         espacio = 60
         y_actual = base_y
@@ -137,7 +135,6 @@ def mostrar_ranking(screen, path=RANKING_PATH):
             screen.blit(surf, rect)
             y_actual += espacio
 
-        # Instrucción para volver
         info_surf = FUENTE_MEDIANA.render("Presiona ESC para volver", True, BLANCO)
         info_rect = info_surf.get_rect(center=(ANCHO // 2, ALTO - 40))
         screen.blit(info_surf, info_rect)
