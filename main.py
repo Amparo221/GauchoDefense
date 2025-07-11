@@ -1,6 +1,7 @@
 import pygame, sys
 from menu import mostrar_menu
 from ui.ranking import mostrar_ranking
+from ui.intro import mostrar_introduccion
 from game.utils import mostrar_creditos
 from game.ejecutar_juego import iniciar_juego
 from assets.assets import cargar_assets
@@ -36,6 +37,7 @@ def main():
 
         if accion == "jugar":
             play_click(sonido)
+            mostrar_introduccion(pantalla)
             cambiar_musica("juego")
             iniciar_juego(assets)
             cambiar_musica("menu")

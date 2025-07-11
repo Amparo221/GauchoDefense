@@ -18,6 +18,12 @@ def movimiento_jugador(y_actual: int, velcidad_movimiento: int, ALTO: int) -> tu
       - W y S para arriba y abajo.
       - Dentro de los limites de la pantalla.
     Devuelve (y_actual, movimiento_flag).
+    Args:
+        y_actual: int
+        velcidad_movimiento: int
+        ALTO: int
+    Returns:
+        tuple[int, bool] (y_actual, movimiento)
     """
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
@@ -44,6 +50,15 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
     Gestiona movimiento y expiración de balas.
     - Si SPACE y cooldown ok, crea una bala y suena el SFX.
     Devuelve (nuevo_ultimo_disparo, disparar_flag).
+    Args:
+        lista_de_balas: list
+        tiempo_actual: int
+        ultimo_disparo: int
+        jugador_x: int
+        jugador_y: int
+        sonido_disparo: dict
+    Returns:
+        tuple[int, bool] (ultimo_disparo, disparar)
     """
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
@@ -92,6 +107,22 @@ def generar_animaciones(
     Devuelve:
     Si el disparo sigue activo (nuevo_disparo_playing)
     Cuándo empezó (nuevo_disparo_start_time)
+    
+    Args:    
+        pantalla: pygame.surface
+        jugador_img: pygame.surface
+        disparar_flag: bool
+        tiempo_actual: int
+        anim_disparo: pygame.sprite.Group
+        duracion_disparo: int
+        en_movimiento: bool
+        anim_caminar: pygame.sprite.Group
+        pos_x: int
+        pos_y: int
+        disparo_playing: bool
+        disparo_start_time: int
+    Returns:
+        tuple[bool, int] (disparo_playing, disparo_start_time)
     """
 
     if disparar_flag and not disparo_playing:

@@ -18,6 +18,7 @@ def play_click(sonido: dict, delay_ms=250) -> None:
     """
     Recibe diccionario de sonidos.
     Invoca el sonido de click.
+    
     """
     reproducir_sonido(sonido, "menu_click")
     pygame.time.delay(delay_ms)
@@ -26,6 +27,9 @@ def cambiar_musica(modo: str) -> None:
     """
     Recibe el modo del juego: menu o juego.
     Detiene la que esté sonando y arranca la nueva con fade.
+
+    Args:
+        modo: str
     """
     if modo == "menu":
         pygame.mixer.music.fadeout(VOLUMEN_MUSIC_JUEGO["fade_ms"])
@@ -45,6 +49,15 @@ def cambiar_musica(modo: str) -> None:
 def cargar_sonido() -> dict:
     """
     Carga y devuelve un diccionario con todos los efectos a usar.
+
+    Returns:
+        dict{
+        "disparo": pygame.mixer.Sound(n),
+        "menu_click": pygame.mixer.Sound(n),
+        "hit_zombie": pygame.mixer.Sound(n),
+        "hurt_gaucho": pygame.mixer.Sound(n),
+        "game_over": pygame.mixer.Sound(n)
+    }
     """
     sonidos = {
         "disparo": pygame.mixer.Sound(RUTA_SONIDO_DISPARO),
@@ -62,6 +75,10 @@ def cargar_sonido() -> dict:
 def reproducir_sonido(sounds_dict: dict, clave: str) -> None:
     """
     Recibe un diccionario de sonidos (sounds_dict) y una cadena (clave) que indica qué sonido se quiere reproducir.
+
+    Args:
+        sounds_dict: dict
+        clave: str
     """
     s = sounds_dict.get(clave)
     if s:
@@ -72,6 +89,12 @@ def reproducir_musica(ruta: str, volume: float, fade_ms: int, loops=-1) -> None:
     """
     Recibe ruta, volumen y fadeout.
     Invoca la reproducción de la musica.
+
+    Args:
+        ruta: str
+        volume: float
+        fade_ms: int
+        loops: int
     """
     pygame.mixer.music.load(ruta)
     pygame.mixer.music.set_volume(volume)
@@ -81,6 +104,9 @@ def detener_musica(fade_ms: int) -> None:
     """
     Recibe fadeout.
     Invoca la parada de la musica.
+
+    Args:
+        fade_ms: int
     """
     pygame.mixer.music.fadeout(fade_ms)
 

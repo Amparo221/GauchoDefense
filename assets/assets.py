@@ -2,7 +2,29 @@ import pygame
 import gif_pygame
 from config import *
 
-def cargar_assets():
+def cargar_assets() -> dict:
+    """
+    Carga y devuelve un diccionario con todos los assets a usar.
+    Returns:
+        dict{
+        "pantalla": pantalla,
+        "fondo": fondo,
+        "fondo_noche": fondo_noche,
+        "fondo_actual": "fondo",
+        "ultimo_cambio_fondo": 0,
+        "fondo_menu": fondo_menu,
+        "ancho_fondo": ancho_fondo,
+        "altura_fondo": altura_fondo,
+        "gaucho": gaucho,
+        "caminar": caminar,
+        "disparo": disparo,
+        "bala_img": bala_img,
+        "zombie_img": zombie_img,
+        "zombie_fuerte": zombie_fuerte,
+        "zombie_herido": zombie_herido,
+        "zombie_muerto": zombie_muerto
+    }
+    """
     # Ventana
     pantalla = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption("Gaucho Defense")  # Título de la ventana
