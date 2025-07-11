@@ -33,11 +33,28 @@ def spawn_zombie(tiempo_ahora, ultimo_spawn, lista_enemigos, assets):
         return tiempo_ahora
     return ultimo_spawn
 
-def mover_zombies(lista_enemigos):
+def mover_zombies(lista_enemigos: list) -> None:
+    """"
+    Se mueven los enemigos hacia la izquierda
+    Args:
+        lista_enemigos: list
+    """
     for z in lista_enemigos:
         z["rect"].x -= config.ZOMBIE_SPEED
 
-def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, tiempo_ahora, sonido_hit):
+def detectar_colisiones(balas: list, puntuacion: int, lista_enemigos: list, zombie_muerto_img: pygame.surface, tiempo_ahora: int, sonido_hit: dict) -> int:
+    """
+    Detecta colisiones y actualiza la puntuacion
+    Args:
+        balas: list
+        puntuacion: int
+        lista_enemigos: list
+        zombie_muerto_img: pygame.surface
+        tiempo_ahora: int
+        sonido_hit: dict
+    Returns:
+        int (puntuacion)
+    """
     for bala in balas[:]:
         bala_rect = pygame.Rect(bala[0], bala[1], 15, 5)
         for z in lista_enemigos[:]:
@@ -59,7 +76,18 @@ def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, ti
     return puntuacion
 
 
-def verificar_choque_con_jugador(gaucho_rect, vidas, lista_enemigos, sonido_hurt_gaucho):
+def verificar_choque_con_jugador(gaucho_rect: pygame.rect, vidas: int, lista_enemigos: list, sonido_hurt_gaucho: dict) -> int:
+    """
+    Si el gaucho choca con un zombie se le resta una vida y se reproduce el sonido de hurt_gaucho.
+    Se remueve el zombie y se devuelve la cantidad de vidas restantes
+    Args:
+        gaucho_rect: pygame.rect
+        vidas: int
+        lista_enemigos: list
+        sonido_hurt_gaucho: dict
+    Returns:
+        int (vidas)
+    """
     for zombie in lista_enemigos:
         if gaucho_rect.colliderect(zombie['rect']):
             vidas -= 1
@@ -70,7 +98,14 @@ def verificar_choque_con_jugador(gaucho_rect, vidas, lista_enemigos, sonido_hurt
             break  
     return vidas
 
-def remover_zombies_muertos(lista_enemigos, tiempo_actual, delay=300):
+def remover_zombies_muertos(lista_enemigos: list, tiempo_actual: int, delay: int=300) -> None:
+    """
+    Si un zombie muere se remueve de la lista
+    Args:
+        lista_enemigos: list
+        tiempo_actual: int
+        delay: int
+    """
     for z in lista_enemigos[:]:
         if not z["vivo"] and "tiempo_muerte" in z:
             if tiempo_actual - z["tiempo_muerte"] > delay:

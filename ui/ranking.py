@@ -5,17 +5,30 @@ import sys
 import config
 
 
-def get_puntaje(entry):
+def get_puntaje(entry: dict) -> int:
     """
-    Extrae el valor de 'puntaje' de una entrada de ranking.
+    Extrae el valor "puntaje" de una diccionario de ranking.
+
+    Args:
+        entry: dict
+
+    Returns:
+        int (puntaje)
     """
     return entry["puntaje"]
 
 
 def cargar_puntuaciones():
     """
-    Lee el archivo JSON de ranking en 'path' y devuelve el top-5 ordenado.
+    Abre el archivo JSON de ranking en 'path', lo lee, convierte a dict Python
+    y retorna el top-5 ordenado.
     Si el archivo no existe o está vacío, devuelve [].
+
+    Args:
+        path: str
+
+    Returns:
+        list (mejores 5 puntuaciones)
     """
     if not os.path.exists(config.RANKING_PATH):
         return []
@@ -33,7 +46,12 @@ def cargar_puntuaciones():
 def guardar_puntuaciones(puntuaciones):
     """
     Escribe la lista 'puntuaciones' en formato JSON en 'path'.
-    Crea el directorio si no existe.
+    Chequea que el directorio exista, si es asi no hace nada.
+    Si no existe, lo crea.
+
+    Args:
+        puntuaciones: list
+        path: str
     """
     carpeta = os.path.dirname(config.RANKING_PATH)
     if carpeta != "":
@@ -43,22 +61,26 @@ def guardar_puntuaciones(puntuaciones):
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
+def obtener_mejores_puntuaciones(puntuaciones: list, top_n: int = 5) -> list:
     """
     Ordena la lista 'puntuaciones' de mayor a menor, y devuelve las primeras 'top_n'.
+
+    Args:
+        puntuaciones: list
+        top_n: int
+
+    Returns:
+        list
     """
     if puntuaciones is None:
         return []
 
-    # Copiamos la lista para no mutar el original
     copia = []
     for entrada in puntuaciones:
         copia.append(entrada)
 
-    # Ordenamos usando la función de extracción de puntaje
     ordenada = sorted(copia, key=get_puntaje, reverse=True)
 
-    # Obtenemos solo el top_n
     resultado = []
     contador = 0
     for entrada in ordenada:
@@ -73,8 +95,16 @@ def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
 
 def agregar_puntuacion(nombre, puntaje):
     """
-    Inserta un nuevo puntaje si hay <5 o es >= al mínimo del top-5.
+    Inserta un nuevo puntaje si hay < 5 o es >= al mínimo del top-5.
     Retorna True si se guardó, False en caso contrario.
+
+    Args:
+        nombre: str
+        puntaje: int
+        path: str
+
+    Returns:
+        bool
     """
     scores = cargar_puntuaciones()
 
@@ -98,8 +128,12 @@ def agregar_puntuacion(nombre, puntaje):
 
 def mostrar_ranking(screen, assets):
     """
-    Muestra en pantalla el top-5 de puntuaciones.
+    Carga, muestra y da formato en pantalla el top-5 de puntuaciones.
     Espera ESC o cierre de ventana para volver.
+
+    Args:
+        screen: pygame.surface
+        path: str
     """
     puntuaciones = cargar_puntuaciones()
     top5 = obtener_mejores_puntuaciones(puntuaciones, top_n=5)
@@ -125,7 +159,6 @@ def mostrar_ranking(screen, assets):
         titulo_rect = titulo_surf.get_rect(center=(config.ANCHO // 2, 60))
         screen.blit(titulo_surf, titulo_rect)
 
-        # Entradas de ranking
         base_y = 150
         espacio = 60
         y_actual = base_y

@@ -8,11 +8,19 @@ eclock = pygame.time.Clock()
 
 def crear_botones(fuente_grande, musica_pausada: bool) -> list[dict]:
     """
-    Genera la lista de diccionarios con información de cada botón:
+    Declara una lista de tuplas con todas las variables de botones y su altura.
+    - Incluye Pausar/Reanudar Música según el estado.
+    Desempaqueta las tuplas y genera la lista de diccionarios botones con información de cada botón:
     - clave: acción en minúsculas
-    - normal, hover: superficies
+    - normal, hover: declara y asigna superficies para cada estado
     - rect: posición
-    Incluye Pausar/Reanudar Música según el estado.
+    Retorna botones
+
+    Args:
+        musica_pausada (bool): Estado de la música.
+
+    Returns:
+        list[dict]: botones
     """
     etiquetas = [
         ("Jugar", 200),
@@ -37,7 +45,13 @@ def crear_botones(fuente_grande, musica_pausada: bool) -> list[dict]:
 
 def dibujar_botones(pantalla: pygame.Surface, botones: list[dict]) -> None:
     """
-    Dibuja cada botón en pantalla, cambiando a hover si el cursor está encima.
+    Recibe pantalla, donde dibuja botones. 
+    Declara una colision con el mouse: en estado pasivo la superficie surf_norm,
+    en estado activo la superficie surf_hover
+
+    Args:
+        pantalla (pygame.surface): superficie de la pantalla del juego.
+        botones (list[dict]): lista de diccionarios con informacion de los botones.
     """
     pos_mouse = pygame.mouse.get_pos()
     for btn in botones:
@@ -47,11 +61,21 @@ def dibujar_botones(pantalla: pygame.Surface, botones: list[dict]) -> None:
 
 def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: bool) -> tuple[ str|None, bool ]:
     """
-    Procesa eventos del menú:
-      - Clic en botón: retorna (clave, nuevo_estado_musica)
+    Procesa eventos en el menú:
+      - Enumera cada botón
+      - Retorna tupla (clave, nuevo_estado_musica):
       - Tecla ESC o ventana cerrar: retorna ("salir", musica_pausada)
       - Si se clickea Pausar/Reanudar Música: alterna estado y retorna (None, nuevo_estado)
       - ENTER sobre botón: equivalente a clic
+      - El evento click izquierdo: reproduce sonido de click
+
+    Args:
+        botones (list[dict]): lista de diccionarios con informacion de los botones.
+        sonidos_menu (dict): diccionario con sonidos del menu.
+        musica_pausada (bool): Estado de la musica.
+
+    Returns:
+        tuple[ str|None, bool ]: (clave, musica_pausada)
     """
     seleccion = None
     pos_mouse = pygame.mouse.get_pos()
@@ -62,17 +86,16 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
 
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            return "salir", musica_pausada
+            return config.MODE_QUIT, musica_pausada
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_ESCAPE:
-                return "salir", musica_pausada
+                return config.MODE_SALIR, musica_pausada
             if evento.key == pygame.K_RETURN and seleccion is not None:
                 return botones[seleccion]["clave"], musica_pausada
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1 and seleccion is not None:
             reproducir_sonido(sonidos_menu, "click")
             clave = botones[seleccion]["clave"]
             if clave in ("pausar música", "reanudar música"):
-                # Alternar música de fondo
                 if not musica_pausada:
                     detener_musica(config.VOLUMEN_MUSIC_MENU["fade_ms"])
                 else:
@@ -95,6 +118,13 @@ def mostrar_menu(pantalla, assets, sonido: list[dict]) -> str:
       2. Dibuja fondo tileado, título y botones
       3. Maneja eventos y retorna la acción seleccionada
       3. Retorna la acción seleccionada
+
+    Args:
+        assets (dict): diccionario con assets del juego.
+        sonido (dict): diccionario con sonidos del juego.
+
+    Returns:
+        str: accion seleccionada
     """
     # 1) Inicialización local
     musica_pausada = False
@@ -117,6 +147,5 @@ def mostrar_menu(pantalla, assets, sonido: list[dict]) -> str:
         if accion:
             return accion
 
-        # Refresh
         pygame.display.flip()
         eclock.tick(60)

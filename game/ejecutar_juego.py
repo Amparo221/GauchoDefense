@@ -23,7 +23,6 @@ def iniciar_juego(assets, sonido, pantalla):
         if modo == MODE_MENU:   
             return
 
-        # logica del juego
         actualizar_juego(estado, assets, sonido)
         if estado["flags"]["game_over"]: 
             pygame.mixer.music.fadeout(1000)

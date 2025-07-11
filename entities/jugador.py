@@ -3,7 +3,10 @@ from pygame.locals import *
 import config
 from game.audio import reproducir_sonido
 
-def crear_balas(pantalla, balas, bala_img):
+def crear_balas(pantalla: pygame.surface, balas: list, bala_img: pygame.surface) -> None:
+    """
+    Dibuja las balas
+    """
     for bala in balas:
         pantalla.blit(bala_img, (bala[0], bala[1]))
 
@@ -31,9 +34,18 @@ def movimiento_jugador(y_actual, velcidad_movimiento):
 def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int, jugador_x: int, jugador_y: int, 
                    sonido_disparo: dict) -> tuple[int, bool]:
     """
-    - Gestiona movimiento y expiración de balas.
+    Gestiona movimiento y expiración de balas.
     - Si SPACE y cooldown ok, crea una bala y suena el SFX.
     Devuelve (nuevo_ultimo_disparo, disparar_flag).
+    Args:
+        lista_de_balas: list
+        tiempo_actual: int
+        ultimo_disparo: int
+        jugador_x: int
+        jugador_y: int
+        sonido_disparo: dict
+    Returns:
+        tuple[int, bool] (ultimo_disparo, disparar)
     """
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
@@ -49,7 +61,6 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
         bala_y = jugador_y + ((config.GAUCHO_SIZE[1] // 2)-15)
         lista_de_balas.append([bala_x, bala_y])
 
-        # sonido disparo despues de crear la bala
         reproducir_sonido(sonido_disparo, "disparo")
 
         return tiempo_actual, disparar
@@ -58,44 +69,62 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
 
 
 def generar_animaciones(
-    pantalla,
-    jugador_img,
-    disparar_flag,
-    tiempo_actual,
-    anim_disparo,
-    duracion_disparo,
-    en_movimiento,
-    anim_caminar,
-    pos_x,
-    pos_y,
-    disparo_playing,
-    disparo_start_time
-):
+    pantalla: pygame.surface,
+    jugador_img: pygame.surface,
+    disparar_flag: bool,
+    tiempo_actual: int,
+    anim_disparo: pygame.sprite.Group,
+    duracion_disparo: int,
+    en_movimiento: bool,
+    anim_caminar: pygame.sprite.Group,
+    pos_x: int,
+    pos_y: int,
+    disparo_playing: bool,
+    disparo_start_time: int
+) -> tuple[bool, int]:
     """
     Gestiona la animación de disparo y de caminar:
+    Si está disparando: muestra la animación de disparo.
+    Si está caminando: muestra la animación de caminar.
+    Si está quieto: muestra el sprite estático.
       - Si disparar_flag==True: arranca la animación de disparo.
       - Mientras disparo_playing: renderiza anim_disparo.
       - Si no: si en_movimiento, renderiza anim_caminar.
       - Si no: pinta el sprite estático (jugador_img).
-    Devuelve (nuevo_disparo_playing, nuevo_disparo_start_time).
+    Devuelve:
+    Si el disparo sigue activo (nuevo_disparo_playing)
+    Cuándo empezó (nuevo_disparo_start_time)
+    
+    Args:    
+        pantalla: pygame.surface
+        jugador_img: pygame.surface
+        disparar_flag: bool
+        tiempo_actual: int
+        anim_disparo: pygame.sprite.Group
+        duracion_disparo: int
+        en_movimiento: bool
+        anim_caminar: pygame.sprite.Group
+        pos_x: int
+        pos_y: int
+        disparo_playing: bool
+        disparo_start_time: int
+    Returns:
+        tuple[bool, int] (disparo_playing, disparo_start_time)
     """
-    # disparo justo disparado
+
     if disparar_flag and not disparo_playing:
         disparo_playing = True
         disparo_start_time = tiempo_actual
         anim_disparo.reset()
 
-    # render de disparo
     if disparo_playing:
         anim_disparo.render(pantalla, (pos_x, pos_y))
         if tiempo_actual - disparo_start_time >= duracion_disparo:
             disparo_playing = False
 
-    # render de caminar
     elif en_movimiento:
         anim_caminar.render(pantalla, (pos_x, pos_y))
 
-    # render estático
     else:
         pantalla.blit(jugador_img, (pos_x, pos_y))
 

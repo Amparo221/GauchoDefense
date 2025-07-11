@@ -33,7 +33,6 @@ def renderizar_juego(pantalla, estado, assets):
     estado["flags"]["disparo_playing"]      = dp_playing
     estado["tiempos"]["tiempo_inicio_disparo"] = dp_start
     
-    # dibujar zombies
     dibujar_enemigos(pantalla, estado["enemigos"])
 
     # HUD

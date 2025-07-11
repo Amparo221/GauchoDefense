@@ -9,7 +9,19 @@ from game.audio import inicializar_audio, cargar_sonido, cambiar_musica, play_cl
 import config
 
 
-def main():
+def main() -> None:
+    """
+    Inicializa el juego:
+    - Carga el sonido
+    - Carga la Pantalla
+    - Muestra el menú
+    - En el bucle principal, define los escenarios:
+    1. Jugar
+    2. Ranking
+    3. Créditos
+    4. Salir
+    5. Opción inválida (Manejo de errores -> Vuelve al menú)
+    """
     pygame.init()
     inicializar_audio() 
     sonido = cargar_sonido()
@@ -23,7 +35,7 @@ def main():
     while ejecucion:
         accion = mostrar_menu(pantalla, assets, sonido) 
 
-        if accion == "jugar":
+        if accion == config.MODE_JUGAR:
             play_click(sonido)
             mostrar_introduccion(pantalla, assets)
             cambiar_musica("juego")
@@ -37,12 +49,12 @@ def main():
             mostrar_ranking(pantalla, assets)
             pygame.time.delay(250)
 
-        elif accion in ("créditos", "creditos"):
+        elif accion == config.MODE_CREDITOS:
             play_click(sonido)
             mostrar_creditos(pantalla, assets)
             pygame.time.delay(250)
 
-        elif accion == "salir":
+        elif accion == config.MODE_SALIR:
             play_click(sonido)
             pygame.time.delay(1300)
             pygame.quit()
