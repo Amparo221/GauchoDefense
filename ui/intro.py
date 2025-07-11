@@ -1,9 +1,9 @@
 import pygame
 import sys
 from pygame.locals import *
-from config import ANCHO, ALTO, NEGRO, BLANCO, FUENTE_MEDIANA
+from config import ANCHO, ALTO, NEGRO, BLANCO
 
-def mostrar_introduccion(pantalla):
+def mostrar_introduccion(pantalla, assets):
     """
     Muestra la pantalla de introduccion con el texto proporcionado.
     Retorna cuando se presiona ESC o despues del tiempo de espera.
@@ -21,13 +21,12 @@ def mostrar_introduccion(pantalla):
         "de la muerte y quieren venganza."
     ]
 
-
     textos = []
     for i, linea in enumerate(texto):
-        texto = FUENTE_MEDIANA.render(linea, True, BLANCO)
+        texto = assets["fuentes"]["fuente_mediana"].render(linea, True, BLANCO)
         textos.append(texto)
 
-    skip_text = FUENTE_MEDIANA.render("Presiona ESC para saltar", True, BLANCO)
+    skip_text = assets["fuentes"]["fuente_mediana"].render("Presiona ESC para saltar", True, BLANCO)
 
     #calcular posiciones de Y para cada linea
     posiciones_y = [ALTO // 4 - 50]
@@ -36,7 +35,7 @@ def mostrar_introduccion(pantalla):
 
 
     tiempo_inicio = pygame.time.get_ticks()
-    duracion = 5000
+    duracion = 10000
 
     en_intro = True
     while en_intro:

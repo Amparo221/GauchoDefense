@@ -25,7 +25,7 @@ def main():
 
         if accion == "jugar":
             play_click(sonido)
-            mostrar_introduccion(pantalla)
+            mostrar_introduccion(pantalla, assets)
             cambiar_musica("juego")
             # Arranca el juego
             iniciar_juego(assets, sonido, pantalla)
