@@ -14,6 +14,34 @@ def crear_estado_inicial() -> dict:
     - puntuacion: puntuacion inicial del jugador.
     - vidas: número de vidas iniciales del jugador.
     - datos para la transicion del fondo
+
+    Returns:
+        dict {
+        "jugador": {
+            "x":0,
+            "y":0,
+            "velocidad_movimiento":5, 
+            "en_movimiento": False
+        },
+        "balas": [],
+        "enemigos": [],
+        "tiempos": {
+            "ultimo_spawn":0, 
+            "ultimo_disparo":0,
+            "tiempo_inicio_disparo": 0
+        },
+        "flags":  {
+            "game_over": False, 
+            "ejecucion": True, 
+            "disparar": False,
+            "disparo_playing": 0
+        },
+        "puntuacion":  0,
+        "vidas":  3,
+        "fondo_x": 0,
+        "fondo_actual": "fondo",
+        "ultimo_cambio_fondo": 0
+    }
     """
     return {
         "jugador": {
@@ -47,6 +75,10 @@ def accionar_game_over(pantalla: pygame.surface, estado: dict) -> None:
     Recibe pantalla y estado. 
     Muestra y da formato en pantalla a Game Over.
     Invoca pedir_nombre_jugador(), agregar_puntuacion(), mostrar_ranking()
+
+    Args:
+        pantalla (pygame.surface): superficie de la pantalla del juego.
+        estado (dict): diccionario con el estado del juego.
     """    
     pantalla.fill(NEGRO)
     texto_partida_perdida = FONT_TITLE.render('Perdiste, Canejo', True, BLANCO)

@@ -19,6 +19,9 @@ def play_click(sonido: dict, delay_ms=250) -> None:
     Recibe diccionario de sonidos.
     Invoca el sonido de click.
     
+    Args:
+        sonido: dict
+        delay_ms: int
     """
     reproducir_sonido(sonido, "menu_click")
     pygame.time.delay(delay_ms)

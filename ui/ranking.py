@@ -11,15 +11,27 @@ from config import (
 def get_puntaje(entry: dict) -> int:
     """
     Extrae el valor "puntaje" de una diccionario de ranking.
+
+    Args:
+        entry: dict
+
+    Returns:
+        int (puntaje)
     """
     return entry["puntaje"]
 
 
-def cargar_puntuaciones(path=RANKING_PATH) -> list:
+def cargar_puntuaciones(path: str = RANKING_PATH) -> list:
     """
     Abre el archivo JSON de ranking en 'path', lo lee, convierte a dict Python
     y retorna el top-5 ordenado.
     Si el archivo no existe o está vacío, devuelve [].
+
+    Args:
+        path: str
+
+    Returns:
+        list (mejores 5 puntuaciones)
     """
     if not os.path.exists(path):
         return []
@@ -34,11 +46,15 @@ def cargar_puntuaciones(path=RANKING_PATH) -> list:
     return obtener_mejores_puntuaciones(datos, top_n=5)
 
 
-def guardar_puntuaciones(puntuaciones: list, path=RANKING_PATH) -> None:
+def guardar_puntuaciones(puntuaciones: list, path: str = RANKING_PATH) -> None:
     """
     Escribe la lista 'puntuaciones' en formato JSON en 'path'.
     Chequea que el directorio exista, si es asi no hace nada.
     Si no existe, lo crea.
+
+    Args:
+        puntuaciones: list
+        path: str
     """
     carpeta = os.path.dirname(path)
     if carpeta != "":
@@ -48,9 +64,16 @@ def guardar_puntuaciones(puntuaciones: list, path=RANKING_PATH) -> None:
         json.dump(puntuaciones, f, ensure_ascii=False, indent=2)
 
 
-def obtener_mejores_puntuaciones(puntuaciones: list, top_n=5) -> list:
+def obtener_mejores_puntuaciones(puntuaciones: list, top_n: int = 5) -> list:
     """
     Ordena la lista 'puntuaciones' de mayor a menor, y devuelve las primeras 'top_n'.
+
+    Args:
+        puntuaciones: list
+        top_n: int
+
+    Returns:
+        list
     """
     if puntuaciones is None:
         return []
@@ -77,6 +100,14 @@ def agregar_puntuacion(nombre: str, puntaje: int, path=RANKING_PATH) -> bool:
     """
     Inserta un nuevo puntaje si hay < 5 o es >= al mínimo del top-5.
     Retorna True si se guardó, False en caso contrario.
+
+    Args:
+        nombre: str
+        puntaje: int
+        path: str
+
+    Returns:
+        bool
     """
     scores = cargar_puntuaciones(path)
 
@@ -102,6 +133,10 @@ def mostrar_ranking(screen: pygame.Surface, path=RANKING_PATH) -> None:
     """
     Carga, muestra y da formato en pantalla el top-5 de puntuaciones.
     Espera ESC o cierre de ventana para volver.
+
+    Args:
+        screen: pygame.surface
+        path: str
     """
     puntuaciones = cargar_puntuaciones(path)
     top5 = obtener_mejores_puntuaciones(puntuaciones, top_n=5)
