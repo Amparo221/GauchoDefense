@@ -1,5 +1,9 @@
 import pygame
 
+"""Configuración del juego Gaucho Defense.
+Define constantes para la pantalla, colores, rutas de assets, fuentes, audio,
+tamaños, gameplay."""
+
 # Pantalla
 ANCHO, ALTO = 1000, 600
 
@@ -8,6 +12,13 @@ BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 GRIS   = ( 50,  50,  50)
 COLOR_HOVER = (200, 200, 200)
+
+# Tamanio Fuentes
+FUENTE_TAM_GRANDE = 40
+FUENTE_TAM_MEDIANA = 30
+FUENTE_TAM_TITULO = 80
+FUENTE_TAM_HUD = 36
+FUENTE_TAM_JUGADOR = 48
 
 # Rutas a assets
 RUTA_FONDO_JUEGO   = "assets/images/fondo.png"
@@ -18,14 +29,6 @@ RUTA_CAMINAR       = "assets/images/caminar.gif"
 RUTA_DISPARO       = "assets/images/disparo.gif"
 RUTA_FUENTE        = "assets/fonts/Jersey10-Regular.ttf"
 RUTA_ZOMBIE_MUERTO = "assets/images/zombie_muerto.png"
-
-# Fuentes
-pygame.font.init()
-FUENTE_GRANDE = pygame.font.Font(RUTA_FUENTE, 40)
-FUENTE_MEDIANA = pygame.font.Font(RUTA_FUENTE, 30)
-FUENTE_TITULO_PRINCIPAL = pygame.font.Font(RUTA_FUENTE, 80)
-FONT_HUD      = pygame.font.Font(RUTA_FUENTE, 36)
-FONT_TITLE    = pygame.font.Font(RUTA_FUENTE, 48)
 
 # Rutas de audio
 SONIDO_CLICK = "assets/sounds/click.ogg"

@@ -1,14 +1,14 @@
 import pygame
 import random
-from config import SPAWN_DISPONIBLES, SPAWN_TIEMPO, ZOMBIE_SIZE, ZOMBIE_SPEED, RUTA_ZOMBIE_MUERTO
+import config
 from game.audio import reproducir_sonido
 
 
-def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, zombie_img):
-    if tiempo_ahora - ultimo_spawn >= SPAWN_TIEMPO:
-        y = random.choice(SPAWN_DISPONIBLES)
+def spawn_zombie(tiempo_ahora, ultimo_spawn, lista_enemigos, zombie_img):
+    if tiempo_ahora - ultimo_spawn >= config.SPAWN_TIEMPO:
+        y = random.choice(config.SPAWN_DISPONIBLES)
 
-        zombie_rect = pygame.Rect(ancho_screen, y, *ZOMBIE_SIZE)
+        zombie_rect = pygame.Rect(config.ANCHO, y, *config.ZOMBIE_SIZE)
         lista_enemigos.append({
             "rect": zombie_rect, 
             "img": zombie_img,
@@ -20,7 +20,7 @@ def spawn_zombie(tiempo_ahora, ultimo_spawn, ancho_screen, lista_enemigos, zombi
 
 def mover_zombies(lista_enemigos):
     for z in lista_enemigos:
-        z["rect"].x -= ZOMBIE_SPEED
+        z["rect"].x -= config.ZOMBIE_SPEED
 
 def detectar_colisiones(balas, puntuacion, lista_enemigos, zombie_muerto_img, tiempo_ahora, sonido_hit):
     for bala in balas[:]:

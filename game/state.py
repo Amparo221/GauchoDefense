@@ -1,6 +1,6 @@
-from config import *
 from game.utils import pedir_nombre_jugador
 from ui.ranking import agregar_puntuacion, mostrar_ranking
+from ui.renderer import dibujar_game_over
 
 
 # Define un diccionario con el estado inicial del juego 
@@ -39,17 +39,8 @@ def crear_estado_inicial():
         "vidas":  3
     }
 
-def accionar_game_over(pantalla, estado):
-    # muestra “Perdiste”, pide nombre con pedir_nombre_jugador(),
-    # agregar_puntuacion(name, estado["puntuacion"])
-    # pantalla de game over
-    pantalla.fill(NEGRO)
-    texto_partida_perdida = FONT_TITLE.render('Perdiste, Canejo', True, BLANCO)
-    pantalla.blit(texto_partida_perdida, texto_partida_perdida.get_rect(center=(ANCHO//2, ALTO//2 - 50)))
-    pygame.display.flip()
-    pygame.time.delay(3000)
-
-    # pedir nombre y guardar score
-    name = pedir_nombre_jugador(pantalla)
-    agregar_puntuacion(name, estado["puntuacion"])
-    mostrar_ranking(pantalla)
+def accionar_game_over(pantalla, estado, assets):
+    '''Muestra la pantalla de Game Over y guarda la puntuación del jugador.'''
+    dibujar_game_over(pantalla, assets["fuentes"]["fuente_grande"])
+    agregar_puntuacion(pedir_nombre_jugador(pantalla, assets["fuentes"]["fuente_jugador"]), estado["puntuacion"])
+    mostrar_ranking(pantalla, assets["fuentes"]["fuente_mediana"])

@@ -1,13 +1,12 @@
 import pygame
-from game.audio import reproducir_musica, cargar_sonido, detener_musica, reproducir_sonido
-from assets.assets import cargar_assets
-from ui.renderer import dibujar_fondo
-from config import *
+from game.audio import reproducir_musica, detener_musica, reproducir_sonido
+from ui.renderer import dibujar_fondo, dibujar_titulo
+import config
 
 # Creamos reloj local para controlar FPS
 eclock = pygame.time.Clock()
 
-def crear_botones(musica_pausada: bool) -> list[dict]:
+def crear_botones(fuente_grande, musica_pausada: bool) -> list[dict]:
     """
     Genera la lista de diccionarios con información de cada botón:
     - clave: acción en minúsculas
@@ -24,9 +23,9 @@ def crear_botones(musica_pausada: bool) -> list[dict]:
     ]
     botones = []
     for texto, y in etiquetas:
-        surf_norm = FUENTE_GRANDE.render(texto, True, BLANCO)
-        surf_hover = FUENTE_GRANDE.render(texto, True, COLOR_HOVER)
-        rect = surf_norm.get_rect(center=(ANCHO // 2, y))
+        surf_norm = fuente_grande.render(texto, True, config.BLANCO)
+        surf_hover = fuente_grande.render(texto, True, config.COLOR_HOVER)
+        rect = surf_norm.get_rect(center=(config.ANCHO // 2, y))
         botones.append({
             "clave": texto.lower(),
             "normal": surf_norm,
@@ -75,13 +74,13 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
             if clave in ("pausar música", "reanudar música"):
                 # Alternar música de fondo
                 if not musica_pausada:
-                    detener_musica(VOLUMEN_MUSIC_MENU["fade_ms"])
+                    detener_musica(config.VOLUMEN_MUSIC_MENU["fade_ms"])
                 else:
                     reproducir_musica(
-                        RUTA_MUSICA_MENU,
+                        config.RUTA_MUSICA_MENU,
                         loops=-1,
-                        volume=VOLUMEN_MUSIC_MENU["volumen"],
-                        fade_ms=VOLUMEN_MUSIC_MENU["fade_ms"]
+                        volume=config.VOLUMEN_MUSIC_MENU["volumen"],
+                        fade_ms=config.VOLUMEN_MUSIC_MENU["fade_ms"]
                     )
                 musica_pausada = not musica_pausada
                 return None, musica_pausada
@@ -89,39 +88,32 @@ def manejar_eventos(botones: list[dict], sonidos_menu: dict, musica_pausada: boo
     return None, musica_pausada
 
 
-def mostrar_menu(assets, sonido) -> str:
+def mostrar_menu(pantalla, assets, sonido: list[dict]) -> str:
     """
     Bucle principal del menú:
-      1. Carga assets y sonidos
-      2. Itera: draw fondo, draw título, draw botones, manejar eventos
+      1. Carga assets y sonidos necesarios
+      2. Dibuja fondo tileado, título y botones
+      3. Maneja eventos y retorna la acción seleccionada
       3. Retorna la acción seleccionada
     """
     # 1) Inicialización local
-    datos = assets
-    pantalla = datos["pantalla"]
-    fondo = datos["fondo_menu"]
-    ancho_fondo = datos["ancho_fondo"]
-    alto_fondo = datos["altura_fondo"]
-    sonidos_menu = sonido
     musica_pausada = False
 
     ejecucion = True
 
     while ejecucion:
         # Dibujo de fondo tileado
-        dibujar_fondo(pantalla, fondo, ancho_fondo, alto_fondo)
+        dibujar_fondo(pantalla, assets["imagenes"]["fondo_menu"], assets["imagenes"]["ancho_fondo_menu"], assets["imagenes"]["alto_fondo_menu"])
 
         # Título centrado
-        titulo_surf = FUENTE_TITULO_PRINCIPAL.render("Gaucho Defense", True, BLANCO)
-        titulo_rect = titulo_surf.get_rect(center=(ANCHO // 2, 100))
-        pantalla.blit(titulo_surf, titulo_rect)
+        dibujar_titulo(pantalla, assets["fuentes"]["fuente_titulo_principal"])
 
         # Botones y dibujo
-        botones = crear_botones(musica_pausada)
+        botones = crear_botones(assets["fuentes"]["fuente_grande"], musica_pausada)
         dibujar_botones(pantalla, botones)
 
         # Manejo de eventos
-        accion, musica_pausada = manejar_eventos(botones, sonidos_menu, musica_pausada)
+        accion, musica_pausada = manejar_eventos(botones, sonido, musica_pausada)
         if accion:
             return accion
 

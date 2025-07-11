@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from config import GAUCHO_SIZE, COOLDOWN_DISPARO, ANCHO
+import config
 from game.audio import reproducir_sonido
 
 def crear_balas(pantalla, balas, bala_img):
@@ -8,7 +8,7 @@ def crear_balas(pantalla, balas, bala_img):
         pantalla.blit(bala_img, (bala[0], bala[1]))
 
 
-def movimiento_jugador(y_actual, velcidad_movimiento, ALTO):
+def movimiento_jugador(y_actual, velcidad_movimiento):
     tecla_presionada = pygame.key.get_pressed()
     movimiento = False
 
@@ -21,8 +21,8 @@ def movimiento_jugador(y_actual, velcidad_movimiento, ALTO):
 
     if y_actual < 0:
         y_actual = 0
-    if y_actual > ALTO - GAUCHO_SIZE[1]:
-        y_actual = ALTO - GAUCHO_SIZE[1]
+    if y_actual > config.ALTO - config.GAUCHO_SIZE[1]:
+        y_actual = config.ALTO - config.GAUCHO_SIZE[1]
         
     return y_actual, movimiento
 
@@ -38,15 +38,15 @@ def disparar_balas(lista_de_balas: list, tiempo_actual: int, ultimo_disparo: int
     bala_velocidad = 15
     for bala in lista_de_balas[:]:
         bala[0] += bala_velocidad
-        if bala[0] > ANCHO:
+        if bala[0] > config.ANCHO:
             lista_de_balas.remove(bala)
     
     disparar = False
     tecla_presionada = pygame.key.get_pressed()
-    if tecla_presionada[K_SPACE] and tiempo_actual - ultimo_disparo >= COOLDOWN_DISPARO:
+    if tecla_presionada[K_SPACE] and tiempo_actual - ultimo_disparo >= config.COOLDOWN_DISPARO:
         disparar=True
-        bala_x = jugador_x + GAUCHO_SIZE[0]
-        bala_y = jugador_y + ((GAUCHO_SIZE[1] // 2)-15)
+        bala_x = jugador_x + config.GAUCHO_SIZE[0]
+        bala_y = jugador_y + ((config.GAUCHO_SIZE[1] // 2)-15)
         lista_de_balas.append([bala_x, bala_y])
 
         # sonido disparo despues de crear la bala
