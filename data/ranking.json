@@ -1,5 +1,9 @@
 [
   {
+    "nombre": " aws",
+    "puntaje": 32
+  },
+  {
     "nombre": "asd",
     "puntaje": 21
   },
@@ -14,9 +18,5 @@
   {
     "nombre": "ddd",
     "puntaje": 9
-  },
-  {
-    "nombre": "pepe",
-    "puntaje": 7
   }
 ]

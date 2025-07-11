@@ -8,16 +8,17 @@ from config import (
 )
 
 
-def get_puntaje(entry):
+def get_puntaje(entry: dict) -> int:
     """
     Extrae el valor de 'puntaje' de una entrada de ranking.
     """
     return entry["puntaje"]
 
 
-def cargar_puntuaciones(path=RANKING_PATH):
+def cargar_puntuaciones(path=RANKING_PATH) -> list:
     """
-    Lee el archivo JSON de ranking en 'path' y devuelve el top-5 ordenado.
+    Abre el archivo JSON de ranking en 'path', lo lee, convierte a dict Python
+    y retorna el top-5 ordenado.
     Si el archivo no existe o está vacío, devuelve [].
     """
     if not os.path.exists(path):
@@ -33,10 +34,11 @@ def cargar_puntuaciones(path=RANKING_PATH):
     return obtener_mejores_puntuaciones(datos, top_n=5)
 
 
-def guardar_puntuaciones(puntuaciones, path=RANKING_PATH):
+def guardar_puntuaciones(puntuaciones: list, path=RANKING_PATH) -> None:
     """
     Escribe la lista 'puntuaciones' en formato JSON en 'path'.
-    Crea el directorio si no existe.
+    Chequea que el directorio exista, si es asi no hace nada.
+    Si no existe, lo crea.
     """
     carpeta = os.path.dirname(path)
     if carpeta != "":
@@ -53,15 +55,12 @@ def obtener_mejores_puntuaciones(puntuaciones, top_n=5):
     if puntuaciones is None:
         return []
 
-    # Copiamos la lista para no mutar el original
     copia = []
     for entrada in puntuaciones:
         copia.append(entrada)
 
-    # Ordenamos usando la función de extracción de puntaje
     ordenada = sorted(copia, key=get_puntaje, reverse=True)
 
-    # Obtenemos solo el top_n
     resultado = []
     contador = 0
     for entrada in ordenada:

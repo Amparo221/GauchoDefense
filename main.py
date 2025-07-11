@@ -9,6 +9,18 @@ from config import *
 
 
 def main():
+    """
+    Inicializa el juego:
+    - Carga el sonido
+    - Carga la Pantalla
+    - Muestra el menú
+    - En el bucle principal, define los escenarios:
+    1. Jugar
+    2. Ranking
+    3. Créditos
+    4. Salir
+    5. Opción inválida (Manejo de errores -> Vuelve al menú)
+    """
     pygame.init()
     inicializar_audio() 
     sonido = cargar_sonido()
